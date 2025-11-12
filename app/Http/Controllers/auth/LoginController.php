@@ -58,7 +58,7 @@ class LoginController extends Controller
             // ✅ ตรวจ path เพื่อ redirect
             if (str_contains($previousUrl, 'water')) {
                 return redirect('/user/waterworks');
-            } elseif (str_contains($previousUrl, 'waste_payment')) {
+            } elseif (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash')) {
                 return redirect('/user/waste_payment');
             }
 
