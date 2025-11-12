@@ -925,64 +925,69 @@ public function confirmPaymentRequestEng($type)
     }
 
     public function showPdfReceiptBill($billId)
-{
-    $bill = Bill::with('trashLocation.trashRequest.files')->findOrFail($billId);
-
-    $trashRequest = $bill->trashLocation?->trashRequest;
-    if (!$trashRequest) {
-        abort(404, 'ไม่พบคำร้อง');
-    }
-
-    $trashLocation = $bill->trashLocation;
-
-    // วัน เดือน ปี ภาษาไทย
-    $date = \Carbon\Carbon::parse($trashRequest->created_at ?? now());
-    $day = (int) $date->format('d');
-    $thaiMonths = [
-        1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
-        5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
-        9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
-    ];
-    $month = $thaiMonths[(int)$date->format('m')];
-    $year = $date->format('Y') + 543;
-
-    $amount = number_format($bill->amount ?? 0, 2, '.', '');
-    [$baht, $satang] = explode('.', $amount);
-
-    $fields = [
-        'field_1'  => $trashRequest->fullname ?? '-',
-        'field_2'  => $trashRequest->prefix ?? '-',
-        'field_3'  => $month ?? '-',
-        'field_4'  => $baht ?? '-',
-        'field_15' => $satang ?? '-',
-        'field_5'  => $trashRequest->house_no ?? '-',
-        'field_6'  => $trashRequest->village_no ?? '-',
-        'field_7'  => $trashLocation?->subdistrict ?? '-',
-        'field_8'  => $trashLocation?->district ?? '-',
-        'field_9'  => $trashLocation?->province ?? '-',
-        'field_12' => $trashRequest->place_type ?? '-',
-        'field_13' => $trashRequest->alley ?? '-',
-        'field_14' => $trashRequest->road ?? '-',
-    ];
-
-    $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
-
-    return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.receipt_bill.pdf', compact(
-        'fields','day','month','year','uploadedFiles'
-    ))
-    ->setPaper('A4', 'portrait')
-    ->stream('ใบเสร็จค่ามูลฝอย.pdf');
-}
-
-
-    public function showLicensePdf($type, $id)
     {
-        // ดึง TrashRequest พร้อมไฟล์
-        $trashRequest = TrashRequest::with('files')->findOrFail($id);
+        $bill = Bill::with('trashLocation.trashRequest.files')->findOrFail($billId);
+
+        $trashRequest = $bill->trashLocation?->trashRequest;
+        if (!$trashRequest) {
+            abort(404, 'ไม่พบคำร้อง');
+        }
+
+        $trashLocation = $bill->trashLocation;
 
         // วัน เดือน ปี ภาษาไทย
         $date = \Carbon\Carbon::parse($trashRequest->created_at ?? now());
-        $day = $date->format('d');
+        $day = (int) $date->format('d');
+        $thaiMonths = [
+            1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
+            5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
+            9 => 'กันยายน', 10 => 'ตุลาคม', 11 => 'พฤศจิกายน', 12 => 'ธันวาคม'
+        ];
+        $month = $thaiMonths[(int)$date->format('m')];
+        $year = $date->format('Y') + 543;
+
+        $amount = number_format($bill->amount ?? 0, 2, '.', '');
+        [$baht, $satang] = explode('.', $amount);
+
+        $fields = [
+            'field_1'  => $trashRequest->fullname ?? '-',
+            'field_2'  => $trashRequest->prefix ?? null,
+            'field_3'  => $month ?? '',
+            'field_4'  => $baht ?? '',
+            'field_15' => $satang ?? null,
+            'field_5'  => $trashRequest->house_no ?? null,
+            'field_6'  => $trashRequest->village_no ?? '',
+            'field_7'  => $trashLocation?->subdistrict ?? '',
+            'field_8'  => $trashLocation?->district ?? '',
+            'field_9'  => $trashLocation?->province ?? '',
+            'field_12' => $trashRequest->place_type ?? '',
+            'field_13' => $trashRequest->alley ?? '',
+            'field_14' => $trashRequest->road ?? '',
+        ];
+
+        $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
+
+        return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.receipt_bill.pdf', compact(
+            'fields','day','month','year','uploadedFiles'
+        ))
+        ->setPaper('A4', 'portrait')
+        ->stream('ใบเสร็จค่ามูลฝอย.pdf');
+    }
+
+    public function showPdfWaterBill($billId)
+    {
+        $bill = Bill::with('waterLocation.trashRequest.files', 'user')->findOrFail($billId);
+        $trashRequest = $bill->waterLocation?->trashRequest;
+
+        if (!$trashRequest) {
+            abort(404, 'ไม่พบคำร้อง');
+        }
+
+        $waterLocation = $bill->waterLocation;
+        $user = $bill->user; // ดึงผู้ใช้เจ้าของบิล
+        // วัน เดือน ปี ภาษาไทย
+        $date = \Carbon\Carbon::parse($trashRequest->created_at ?? now());
+        $day = (int) $date->format('d');
         $thaiMonths = [
             1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
             5 => 'พฤษภาคม', 6 => 'มิถุนายน', 7 => 'กรกฎาคม', 8 => 'สิงหาคม',
@@ -991,195 +996,32 @@ public function confirmPaymentRequestEng($type)
         $month = $thaiMonths[(int)$date->format('m')];
         $year = $date->format('Y') + 543;
         $addon = json_decode($trashRequest->addon, true);
-        if (!empty($addon['payment']['submitted_at'])) {
-            $submittedAt = Carbon::parse($addon['payment']['submitted_at']);
-            $dayPayment = (int) $submittedAt->format('d'); // เอาแค่วัน
-            $monthPayment = $thaiMonths[(int)$submittedAt->format('m')];
-            $yearPayment = $submittedAt->format('Y') + 543;
-        } else {
-            $dayPayment = '-';
-            $monthPayment = '-';
-            $yearPayment = '-';
-        } 
-        if (!empty($addon['license_issued_at'])) {
-            $licenseAt = Carbon::parse($addon['license_issued_at']);
-            $daylicenseAt = (int) $licenseAt->format('d'); // เอาแค่วัน
-            $monthlicenseAt = $thaiMonths[(int)$licenseAt->format('m')];
-            $yearlicenseAt = $licenseAt->format('Y') + 543;
 
-            $expireAt = Carbon::parse($addon['license_expire_at']);
-            $dayexpireAt = (int) $expireAt->format('d'); // เอาแค่วัน
-            $monthexpireAt = $thaiMonths[(int)$expireAt->format('m')];
-            $yearexpireAt = $expireAt->format('Y') + 543;
-        } else {
-            $daylicenseAt = '';
-            $monthlicenseAt = '';
-            $yearlicenseAt = '';
+        $amount = number_format($bill->amount ?? 0, 2, '.', '');
+        [$baht, $satang] = explode('.', $amount);
 
-            $dayexpireAt = '';
-            $monthexpireAt = '';
-            $yearexpireAt = '';
-        }  
-        if (!empty($addon['license_issued_by'])) {
-            $user = User::find($addon['license_issued_by']);
-            if ($user) {
-                $licenseIssuedBy = $user->name; // หรือฟิลด์อื่น ๆ เช่น fullname
-            }
-        }
-
-        if (!empty($addon['at1'])) {
-            $at1 = Carbon::parse($addon['at1']);
-            $dayat1 = (int) $at1->format('d'); // เอาแค่วัน
-            $monthat1 = $thaiMonths[(int)$at1->format('m')];
-            $yearat1 = $at1->format('Y') + 543;
-
-        } else {
-            $dayat1 = '';
-            $monthat1 = '';
-            $yearat1 = '';
-        }  
-
-        if (!empty($addon['endat'])) {
-            $endat = Carbon::parse($addon['endat']);
-            $dayendat = (int) $endat->format('d'); // เอาแค่วัน
-            $monthendat = $thaiMonths[(int)$endat->format('m')];
-            $yearendat = $endat->format('Y') + 543;
-
-        } else {
-            $dayendat = '';
-            $monthendat = '';
-            $yearendat = '';
-        }  
-        
-        if (!empty($addon['license_issued_by'])) {
-            $user = User::find($addon['license_issued_by']);
-            if ($user) {
-                $licenseIssuedBy = $user->name; // หรือฟิลด์อื่น ๆ เช่น fullname
-            }
-        }
-        
-        // Mapping fields สำหรับ PDF
         $fields = [
-            'field_1' => $trashRequest->fullname ?? '-',
-            'field_2' => $trashRequest->prefix ?? '-',
-            'field_3' => $trashRequest->age ?? '-',
-            'field_4' => $trashRequest->nationality ?? '-',
-            'field_5' => $trashRequest->id_card ?? '-',
-            'field_6' => $trashRequest->alley ?? '-',
-            'field_7' => $trashRequest->road ?? '-',
-            'field_8' => $trashRequest->house_no ?? '-',
-            'field_9' => $trashRequest->village_no ?? '-',
-            'field_10' => $trashRequest?->subdistrict ?? '-',
-            'field_11' => $trashRequest?->district ?? '-',
-            'field_12' => $trashRequest?->province ?? '-',
-            'field_13' => $trashRequest?->tel ?? '-',
-            'field_14' => $trashRequest?->fax ?? '-',
-            'field_15' => $addon['personal'] ?? '-',
-            'field_16' => $addon['payment']['amount'] ?? '-',
-            'field_17' => $dayPayment ?? '-',
-            'field_18' => $monthPayment ?? '-',
-            'field_19' => $yearPayment ?? '-',
-            'field_20' => $addon['individual']['type'] ?? '-',
-            'field_21' => $addon['individual']['room_count'] ?? '-',
-            'field_22' => $addon['individual']['home_rent'] ?? '-',
-            'field_23' => $addon['individual']['home_rent'] ?? '-',
-            'field_24' => $addon['corporation']['type'] ?? '-',
-            'field_25' => $addon['corporation']['worker_count'] ?? '-',
-            'field_26' => $addon['corporation']['machine_power'] ?? '-',
-            'field_27' => $daylicenseAt ?? '',
-            'field_28' => $monthlicenseAt ?? '',
-            'field_29' => $yearlicenseAt ?? '',
-            'field_30' => $dayexpireAt ?? '',
-            'field_31' => $monthexpireAt ?? '',
-            'field_32' => $yearexpireAt ?? '',
-            'field_33' => $licenseIssuedBy ?? '',
-            'field_34' => $addon["name"] ?? '-',
-            'field_35'=> $addon["area"] ?? '-',
-            'field_36'=> $addon["house_no"] ?? '-',
-            'field_37'=> $addon["alley"] ?? '-',
-            'field_38'=> $addon["road"] ?? '-',
-            'field_39'=> $addon["village_no"] ?? '-',
-            'field_40'=> $addon["tel"] ?? '-',
-            'field_41'=> $addon["year"] ?? '',
-            'field_42'=> $addon["subdistrict"] ?? null,
-            'field_43'=> $addon["district"] ?? null,
-            'field_44'=> $addon["province"] ?? null,
-            'field_45'=> $addon["at"] ?? '-',
-            'field_46'=> $addon["license_no1"] ?? '',
-            'field_47'=> $addon["at1"] ?? '-',
-            'field_48'=> $addon["home_no1"] ?? '-',
-            'field_49'=> $addon["alley1"] ?? '-',
-            'field_50'=> $addon["road1"] ?? '-',
-            'field_51'=> $addon["village_no1"] ?? '-',
-            'field_52' => $addon['individual']['card_id'] ?? '-',
-            'field_53' => $addon['postcode'] ?? '-',
-            'field_54' => $addon['corporation']['postcode'] ?? '-',
-            'field_55' => $addon['corporation']['corp_registered_at'] ?? '-',
-            '/* The above code appears to be a comment block in PHP. It starts with /* and ends with
-            */, which is the syntax for multi-line comments in PHP. Inside the comment block, there
-            is a line "field_56" followed by " */
-            field_56' => $addon['corporation']['corp_home_no'] ?? '-',
-            'field_57' => $addon['corporation']['alley'] ?? '-',
-            'field_58' => $addon['corporation']['road'] ?? '-',
-            'field_59' => $addon['corporation']['corp_village_no'] ?? '-',
-            'field_60' => $addon['corporation']['subdistrict'] ?? '-',
-            'field_61' => $addon['corporation']['district'] ?? '-',
-            'field_62' => $addon['corporation']['province'] ?? '-',
-            'field_63' => $addon['corporation']['tel'] ?? '-',
-            'field_64' => $addon['corporation']['fax'] ?? '-',
-            'field_65' => $addon['corporation']['name'] ?? '-',
-            'field_66' => $addon['corporation']['corp_registered_no'] ?? '-',
-            'field_67' => $addon['license_no1'] ?? '-',
-            'field_68' => $addon['at1'] ?? '-',
-            'field_69' => $addon['home_no1'] ?? '-',
-            'field_70' => $addon['alley1'] ?? '-',
-            'field_71' => $addon['road1'] ?? '-',
-            'field_72' => $addon['village_no1'] ?? '-',
-            'field_73' => $addon['subdistrict1'] ?? '-',
-            'field_74' => $addon['district1'] ?? '-',
-            'field_75' => $addon['province1'] ?? '-',
-            'field_76' => $dayat1 ?? '-',
-            'field_77' => $monthat1 ?? '-',
-            'field_78' => $yearat1 ?? '-',
-            'field_79' => $addon['name1'] ?? '-',
-            'field_80' => $addon['option3'] ?? '-',
-            'field_81' => $addon['no1'] ?? '-',
-            'field_82' => $addon['name2'] ?? '-',
-            'field_83' => $dayendat ?? '-',
-            'field_84' => $monthendat ?? '-',
-            'field_85' => $yearendat ?? '-',
-            'field_86' => $addon['type2'] ?? '-',
-            'field_87' => $addon['num'] ?? '-',
-            'field_88' => $addon['use'] ?? '-',
-            'field_89' => $addon['num1'] ?? '-',
-            'field_90' => $addon['with'] ?? '-',
-            'field_91' => $addon['to'] ?? '-',
-            'field_92' => $addon['ExtraTime'] ?? '-',
-            'field_93' => $addon['nameCon'] ?? '-',
-            'field_94' => $addon['cardIdCon'] ?? '-',
-            'field_95' => $addon['supervisor']['name'] ?? '-',
-            'field_96' => $addon['supervisor']['card_id'] ?? '-',
-            'field_97' => $addon['fax'] ?? '-',
-
-            'field_00' => $trashRequest->id ?? '-',
-            'field_option' => $addon["option"] ?? '-',
+            'field_1'  => $user->name ?? '-',
+            'field_3'  => $month ?? '',
+            'field_4'  => $baht ?? '',
+            'field_15' => $satang ?? null,
+            'field_5'  => $trashRequest->house_no ?? null,
+            'field_6'  => $trashRequest->village_no ?? '',
+            'field_7'  => $waterLocation?->address ?? '',
+            'field_8'  => $waterLocation?->water_user_no ?? '',
+            'field_9'  => $waterLocation?->province ?? '',
+            'field_12' => $trashRequest->place_type ?? '',
+            'field_13' => $trashRequest->alley ?? '',
+            'field_14' => $trashRequest->road ?? '',
         ];
-        
-        // ไฟล์ที่อัพโหลด
+
         $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
 
-        // สร้างชื่อ view dynamic ตาม type
-        $view = "pdf.license.{$type}-pdf";
-
-        // ตรวจสอบว่า view มีจริงไหม
-        if (!view()->exists($view)) {
-            abort(404, "ไม่พบ template สำหรับประเภท: {$type}");
-        }
-
-        // สร้าง PDF
-        return Pdf::loadView($view, compact('fields', 'day', 'month', 'year', 'uploadedFiles'))
-            ->setPaper('A4', 'portrait')
-            ->stream("ใบอนุญาต_{$type}_{$trashRequest->fullname}.pdf");
+        return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.pay_slip.pdf', compact(
+            'fields','day','month','year','uploadedFiles'
+        ))
+        ->setPaper('A4', 'portrait')
+        ->stream('ใบเสร็จค่ามูลฝอย.pdf');
     }
 
     public function saveLicense($id)

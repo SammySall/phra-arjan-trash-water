@@ -95,6 +95,8 @@ Route::get('/admin/waste_payment', [TrashLocationController::class, 'dashboard']
 
 Route::get('/bill/{bill}/pdf', [TrashRequestController::class, 'showPdfReceiptBill'])
     ->name('admin.bill.pdf');
+Route::get('/water_bill/{bill}/pdf', [TrashRequestController::class, 'showPdfWaterBill'])
+    ->name('admin.water_bill.pdf');
 Route::get('/license/{type}/pdf/{id}', [TrashRequestController::class, 'showLicensePdf'])
     ->name('admin_trash.license_pdf');
 

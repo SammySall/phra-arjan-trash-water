@@ -66,12 +66,11 @@ class LoginController extends Controller
                 } elseif (preg_match('/user\/water/', $previousUrl)) {
                     return redirect('/user/waterworks');
                 }
-
             }
 
 
             // fallback
-            return redirect('/');
+            return redirect('/user/waterworks'); // หรือหน้า home ของ user
         }
 
         return back()->with('error', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');

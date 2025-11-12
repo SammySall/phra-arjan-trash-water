@@ -36,4 +36,9 @@ class WaterLocation extends Model
         return $this->hasMany(Bill::class);
     }
 
+    public function trashRequest()
+    {
+        return $this->hasOne(TrashRequest::class, 'water_location_id', 'id');
+    }
+
 }

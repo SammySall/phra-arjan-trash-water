@@ -72,7 +72,7 @@
 <body>
     <div style="margin-top: 20%; text-align: center;">
         {{-- <img src="{{ public_path('img/menuuser/LOGO.png') }}" alt="LOGO" style="width:150px; margin-bottom:10px;"> --}}
-        <div class="title_doc">ใบเสร็จรับเงินค่ามูลฝอย</div>
+        <div class="title_doc">ใบเสร็จรับเงินค่าประปา</div>
     </div>
 
 
@@ -86,9 +86,9 @@
     </div>
 
     <div class="box_text" style="text-align: left; margin-left:5rem;">
-        <span>ผู้ใช้ขยะเลขที่</span>
+        <span>ผู้ใช้น้ำเลขที่</span>
         <span class="dotted-line" style="width: 20%;">
-            {{ $fields['field_20'] ?? '-' }}</span>
+            {{ $fields['field_8'] ?? '-' }}</span>
         <span>ชื่อ</span>
         <span class="dotted-line" style="width: 47%;">{{ $fields['field_2'] ?? '' }}
             {{ $fields['field_1'] ?? '-' }}</span>
@@ -96,21 +96,76 @@
 
     <div class="box_text" style="text-align: left; margin-left:5rem;">
         <span>ที่อยู่</span>
-        <span class="dotted-line" style="width: 79%;">
-            {{ $fields['field_5'] ?? '-' }}
-            {{ $fields['field_6'] ?? '' }}
-            {{ $fields['field_7'] ?? '' }}
-            {{ $fields['field_8'] ?? '' }}
+        <span class="dotted-line" style="width: 78%;">
+            {{ $fields['field_7'] ?? '-' }}
         </span>
         <br>
         <span>ประเภท</span>
-        <span class="dotted-line" style="width: 32%; text-align: left;">
-            {{ $fields['field_20'] ?? '-' }}</span>
-        <span>ประจำเดือน</span>
-        <span class="dotted-line" style="width: 32%; text-align: left;">
+        <span class="dotted-line" style="width: 28%; text-align: left;">
+            {{ $fields['field_20'] ?? '' }}</span>
+        <span>เส้นทางการเก็บเงิน</span>
+        <span class="dotted-line" style="width: 29%; text-align: left;">
+            {{ $fields['field_20'] ?? '' }}</span>
+        <br>
+        <span>ค่าน้ำประปาประจำเดือน</span>
+        <span class="dotted-line" style="width: 60%; text-align: left;">
             {{ $fields['field_3'] ?? '-' }}</span>
         <br>
 
+        <table style="width:100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #000; padding:5px; width:50%;">รายการ</th>
+                    <th style="border:1px solid #000; padding:5px; width:20%;">จำนวนหน่วยของมาตราวัดน้ำ</th>
+                    <th style="border:1px solid #000; padding:5px; width:30%;">จำนวนเงิน (บาท)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <!-- รายรับ -->
+                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
+
+                    </td>
+
+                    <!-- รายจ่าย -->
+                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
+                        
+                    </td>
+                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
+                        
+                    </td>
+                </tr>
+
+                <!-- แถวรวมรายรับ/รายจ่าย -->
+                <tr>
+                    <td style="border:1px solid #000; padding:5px;">
+                        <table style="width:100%; border:none; border-collapse: collapse; font-weight:bold;">
+                            <tr>
+                                <td style="text-align:left; border:none;">รวมรายรับ</td>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="border:1px solid #000; padding:5px;">
+                        <table style="width:100%; border:none; border-collapse: collapse; font-weight:bold;">
+                            <tr>
+                                <td style="text-align:left; border:none;">รวมรายจ่าย</td>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align:right;">
+                        รับสุทธิ:
+                    </td>
+                    <td style="text-align:right;">
+                        <span style="border-bottom:1px solid #000;">
+                        </span>บาท
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         <span>เป็นเงิน</span>
         <span class="dotted-line"

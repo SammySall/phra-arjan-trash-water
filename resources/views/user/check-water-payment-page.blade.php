@@ -84,7 +84,7 @@
                                                         <i class="bi bi-cash-stack"></i>
                                                     </button>
                                                 @else
-                                                    <a href="{{ route('admin.bill.pdf', $bill->id) }}" target="_blank"
+                                                    <a href="{{ route('admin.water_bill.pdf', $bill->id) }}" target="_blank"
                                                         class="btn btn-danger btn-sm text-white">
                                                         <i class="bi bi-filetype-pdf"></i>
                                                     </a>
