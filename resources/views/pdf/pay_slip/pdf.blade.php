@@ -112,57 +112,42 @@
             {{ $fields['field_3'] ?? '-' }}</span>
         <br>
 
-        <table style="width:100%; border-collapse: collapse;">
+        <table style="width:83%; border-collapse: collapse; font-family: 'THSarabunNew', sans-serif;">
             <thead>
                 <tr>
-                    <th style="border:1px solid #000; padding:5px; width:50%;">รายการ</th>
-                    <th style="border:1px solid #000; padding:5px; width:20%;">จำนวนหน่วยของมาตราวัดน้ำ</th>
-                    <th style="border:1px solid #000; padding:5px; width:30%;">จำนวนเงิน (บาท)</th>
+                    <th style="border:1px solid #000; padding:5px; width:30%; text-align:center;">รายการ</th>
+                    <th style="border:1px solid #000; padding:5px; width:10%; text-align:center;">
+                        จำนวนหน่วยของมาตราวัดน้ำ</th>
+                    <th style="border:1px solid #000; padding:5px; width:30%; text-align:center;">จำนวนเงิน (บาท)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <!-- รายรับ -->
-                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
-
-                    </td>
-
-                    <!-- รายจ่าย -->
-                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
-                        
+                    <td style="border:1px solid #000; padding:5px; vertical-align: top; text-align: right;">
+                        จดครั้งนี้วันที่ <span class="dotted-line" style="width: 63%; text-align: left;">
+                            {{ $fields['field_20'] ?? '' }}</span><br>
+                        จดครั้งก่อนวันที่ <span class="dotted-line" style="width: 55%; text-align: left;">
+                            {{ $fields['field_20'] ?? '' }}</span><br>
+                        <label style="text-align: right;">จำนวนหน่วยที่ใช้</label>
                     </td>
                     <td style="border:1px solid #000; padding:5px; vertical-align: top;">
-                        
+                        <span class="dotted-line" style="width: 100%; text-align: left;">
+                            {{ $fields['field_6'] ?? '-' }}</span><br>
+                        <span class="dotted-line" style="width: 100%; text-align: left;">
+                            {{ $fields['field_5'] ?? '-' }}</span><br>
+                        <span class="dotted-line" style="width: 100%; text-align: left;">
+                            {{ $fields['field_6'] - $fields['field_5'] ?? '-' }}</span><br>
+                    </td>
+                    <td style="border:1px solid #000; padding:5px; vertical-align: center; text-align:right;">
+                        <span class="dotted-line" style="width: 100%; text-align: left;">
+                            {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span>
                     </td>
                 </tr>
-
-                <!-- แถวรวมรายรับ/รายจ่าย -->
+                <!-- แถวรวม -->
                 <tr>
-                    <td style="border:1px solid #000; padding:5px;">
-                        <table style="width:100%; border:none; border-collapse: collapse; font-weight:bold;">
-                            <tr>
-                                <td style="text-align:left; border:none;">รวมรายรับ</td>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="border:1px solid #000; padding:5px;">
-                        <table style="width:100%; border:none; border-collapse: collapse; font-weight:bold;">
-                            <tr>
-                                <td style="text-align:left; border:none;">รวมรายจ่าย</td>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="text-align:right;">
-                        รับสุทธิ:
-                    </td>
-                    <td style="text-align:right;">
-                        <span style="border-bottom:1px solid #000;">
-                        </span>บาท
-                    </td>
+                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">รวมรายรับ</td>
+                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">รวมรายจ่าย</td>
+                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">{{ $fields['total'] ?? '' }}</td>
                 </tr>
             </tbody>
         </table>
