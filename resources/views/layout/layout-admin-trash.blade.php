@@ -65,7 +65,7 @@
             <li>
                 <a href="/admin/trash_bank"
                     class="nav-link {{ Str::contains($path, 'trash_bank') ? 'active' : '' }}">
-                    <img src="{{ url('../img/trash-system/icon-2.png') }}" alt="icon-2" class="img-fluid logo-img">
+                    <img src="{{ url('../img/trash-system/Waste-Bank-Icon.png') }}" alt="icon-2" class="img-fluid logo-img" width="32px">
                     ธนาคารขยะ
                 </a>
             </li>

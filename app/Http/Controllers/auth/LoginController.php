@@ -61,13 +61,13 @@ class LoginController extends Controller
             } elseif ($user->role === 'admin-water') {
                 return redirect('/admin/waterworks/showdata');
             } elseif ($user->role === 'user') {
-                // ✅ ตรวจ path เพื่อ redirect
-                if (preg_match('//user/(waste|trash)/', $previousUrl)) {
+                if (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash')) {
                     return redirect('/user/waste_payment');
-                } elseif (preg_match('//user/water/', $previousUrl)) {
+                } elseif (str_contains($previousUrl, 'water')) {
                     return redirect('/user/waterworks');
                 }
             }
+
 
             // fallback
             return redirect('/');

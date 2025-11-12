@@ -36,7 +36,7 @@
             <li>
                 <a href="/admin/waterworks/showdata"
                     class="nav-link {{ Str::contains($path, 'showdata') ? 'active' : '' }}">
-                    <img src="{{ url('../img/admin-water/icon-1.png') }}" alt="icon-1" class="img-fluid logo-img"
+                    <img src="{{ url('../img/admin-water/Icon-1.png') }}" alt="icon-1" class="img-fluid logo-img"
                         style="width: 20px;">
                     ข้อมูลขอเพิ่มทะเบียน
                 </a>
@@ -45,7 +45,7 @@
             <li>
                 <a href="/admin/waterworks/manage-water"
                     class="nav-link {{ Str::contains($path, 'manage-water') ? 'active' : '' }}">
-                    <img src="{{ url('../img/admin-water/icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"
+                    <img src="{{ url('../img/admin-water/Icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"
                         style="width: 20px;">
                     ทะเบียนผู้ใช้งาน
                 </a>
@@ -54,7 +54,7 @@
             <li>
                 <a href="/admin/waterworks/emergency"
                     class="nav-link {{ Str::contains($path, 'emergency') ? 'active' : '' }}">
-                    <img src="{{ url('../img/admin-water/icon-3.png') }}" alt="icon-3" class="img-fluid logo-img"
+                    <img src="{{ url('../../img/admin-water/Icon-3.png') }}" alt="icon-3" class="img-fluid logo-img"
                         style="width: 20px;">
                     แจ้งเหตุ
                 </a>

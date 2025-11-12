@@ -1,4 +1,5 @@
 @extends('layout.layout-user')
+@section('body-class', 'body-garbage-bg')
 
 @section('content')
     <link rel="stylesheet" href="{{ asset('css/menurequest.css') }}">

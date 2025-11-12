@@ -13,9 +13,9 @@
                         <img src="../img/Garbage/Button-1.png" alt="ดูสถานะรถขยะ" class="img-fluid link-garbage-btn">
                     </a>
                 </div>
-                <div class="col-6 col-md-3">
+                <div class="col-6 col-md-3 pt-2">
                     <a href="/user/waste_payment/trash_bank">
-                        <img src="../img/Garbage/Button-4.png" alt="ธนาคารขยะ" class="img-fluid link-garbage-btn">
+                        <img src="../img/Garbage/Button-3.png" alt="ธนาคารขยะ" class="img-fluid link-garbage-btn">
                     </a>
                 </div>
                 <div class="col-6 col-md-3">
