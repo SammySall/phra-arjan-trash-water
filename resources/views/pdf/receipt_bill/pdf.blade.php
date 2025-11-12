@@ -143,15 +143,15 @@
             <span>(ลงนาม)</span>
             <span class="dotted-line"
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
-                <img src="{{ public_path('img/signature/' . $fields['field_31'] . '.jpg') }}" alt="signature1"
-                    style="width:50%;">
+                @if ($fields['field_31'] !== null)
+                    <img src="{{ public_path('img/signature/' . $fields['field_31'] . '.jpg') }}" alt="signature1"
+                        style="width:50%;">
+                @endif
             </span>
             <div>
                 <span>(</span>
-                @if ($fields['field_31'] !== null)
-                    <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                        {{ $fields['field_31'] ?? '' }}
-                @endif
+                <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
+                    {{ $fields['field_31'] ?? '' }}
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>
