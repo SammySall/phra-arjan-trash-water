@@ -140,33 +140,34 @@
 
 
         <div class="signature-item" style="text-align: right;">
-            {{-- <img src="{{ public_path('img/signature/trash_2.png') }}" alt="signature1" style="width:50%;"> --}}
             <span>(ลงนาม)</span>
             <span class="dotted-line"
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
-                {{ $fields['field_31'] ?? '' }}
+                <img src="{{ public_path('img/signature/' . $fields['field_31'] . '.jpg') }}" alt="signature1"
+                    style="width:50%;">
             </span>
             <div>
                 <span>(</span>
                 <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                    {{ $fields['field_30'] ?? '' }} {{ $fields['field_31'] ?? '' }}
+                    {{ $fields['field_31'] ?? '' }}
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>
             <span style=" margin-right:8rem;">ผู้เก็บเงิน</span>
         </div>
 
-        <div class="signature-item" style="text-align: right;">
-            {{-- <img src="{{ public_path('img/signature/trash_2.png') }}" alt="signature1" style="width:50%;"> --}}
+        <div class="signature-item" style="text-align: right; margin-top:1.5rem;">
             <span>(ลงนาม)</span>
             <span class="dotted-line"
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
-                {{ $fields['field_31'] ?? '' }}
+                @if ($fields['field_31'] !== null)
+                    <img src="{{ public_path('img/signature/1.jpg') }}" alt="signature1" style="width:50%;">
+                @endif
             </span>
             <div>
                 <span>(</span>
                 <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                    {{ $fields['field_30'] ?? '' }} {{ $fields['field_31'] ?? '' }}
+                    {{ $fields['field_31'] ? 'นางสาวสมยา จันทร์ฟัก' : '' }}
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>

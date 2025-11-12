@@ -190,22 +190,39 @@ class WaterController extends Controller
         }
     }
 
-
     public function approveBill(Request $request)
     {
         $request->validate([
             'bill_id' => 'required|exists:bills,id',
+            'receive_by' => 'nullable|string'
         ]);
 
         $bill = Bill::findOrFail($request->bill_id);
         $bill->status = 'ชำระแล้ว';
+        $bill->receive_by = $request->receive_by;
         $bill->save();
+
+        if (!$bill->water_location_id) {
+            return response()->json(['error' => 'bill ไม่มี water_location_id'], 500);
+        }
+
+        $trashRequest = TrashRequest::where('water_location_id', $bill->water_location_id)->first();
+
+        if ($trashRequest) {
+            $addon = json_decode($trashRequest->addon, true) ?? [];
+            $addon['receive_by'] = $request->receive_by ?? 'ไม่ระบุ';
+
+            $trashRequest->addon = json_encode($addon, JSON_UNESCAPED_UNICODE);
+            $trashRequest->save();
+        }
 
         return response()->json([
             'success' => true,
-            'message' => 'บิลถูกอนุมัติเรียบร้อยแล้ว'
+            'message' => 'บิลถูกอนุมัติและอัปเดตข้อมูล TrashRequest เรียบร้อยแล้ว',
         ]);
     }
+
+
 
     public function storeNewBill(Request $request)
     {

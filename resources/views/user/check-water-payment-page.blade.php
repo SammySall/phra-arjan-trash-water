@@ -117,8 +117,6 @@
                 <!-- ข้อมูลการชำระเงิน -->
                 <div class="mb-3">
                     <p><b>โอนเข้าบัญชี:</b>ธนาคาร กรุงไทย เลขที่ 202-1240355</p>
-                    <p><b>QR Code ชำระเงิน:</b></p>
-                    <img src="{{ url('../img/Payment/QR.jpg') }}" alt="QR Code" style="width:100%; max-width:250px; border:1px solid #ccc; padding:5px; display:block;">
                 </div>
 
                 <!-- อัปโหลดสลิป -->

@@ -12,6 +12,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->string('type');
+            $table->string('receive_by')->nullable();
 
             // FK ไป trash_locations
             $table->foreignId('trash_location_id')

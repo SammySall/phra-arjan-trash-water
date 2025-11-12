@@ -157,7 +157,6 @@
                     const billId = this.dataset.id;
                     const slipLink = cells[5].querySelector('a') ? cells[5].querySelector('a')
                         .href : null;
-
                     const htmlContent = `
                 <div style="text-align:left; font-size:16px;">
                     <p><b>วันที่ชำระ:</b> ${cells[1].innerText}</p>
@@ -165,8 +164,16 @@
                     <p><b>ที่อยู่:</b> ${cells[3].innerText}</p>
                     <p><b>ยอดชำระ:</b> ${cells[4].innerText}</p>
                     ${slipLink ? `<p><b>สลิปชำระเงิน:</b></p>
-                                            <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
+                                                        <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
                         : `<p><b>สลิปชำระเงิน:</b> ไม่มี</p>`}
+                        <div class="mt-3">
+                        <label><b>ชื่อผู้รับเงิน:</b></label>
+                        <select id="billStatus" class="form-select mt-1">
+                            <option value="นางนันทจิต เปียฉ่ำ">นางนันทจิต เปียฉ่ำ</option>
+                            <option value="นายศักดิ์สิทธิ์ หมัดรอ">นายศักดิ์สิทธิ์ หมัดรอ</option>
+                            <option value="นายเดชสกุล นุ้ยนิ่ง">นายเดชสกุล นุ้ยนิ่ง</option>
+                        </select>
+                    </div>
                     <div class="d-flex justify-content-end mt-3">
                         <button id="approveBtn" class="btn btn-primary me-2">อนุมัติ</button>
                         <button id="closeModel" class="btn btn-secondary">ปิด</button>
@@ -187,6 +194,8 @@
                             const closeBtn = Swal.getPopup().querySelector(
                                 '#closeModel');
                             closeBtn.addEventListener('click', () => Swal.close());
+                            const selectedStatus = Swal.getPopup().querySelector('#billStatus').value;
+
 
                             const approveBtn = Swal.getPopup().querySelector(
                                 '#approveBtn');
@@ -201,7 +210,8 @@
                                                 'Accept': 'application/json'
                                             },
                                             body: JSON.stringify({
-                                                bill_id: billId
+                                                bill_id: billId,
+                                                receive_by: selectedStatus // ✅ ใช้ค่าที่อ่านมา bill_id: billId,
                                             })
                                         });
                                     const data = await res.json();
@@ -358,6 +368,8 @@
                     const billId = this.dataset.id;
                     const slipLink = cells[5].querySelector('a') ? cells[5].querySelector('a')
                         .href : null;
+                    const selectedStatus = Swal.getPopup().querySelector('#billStatus').value;
+
 
                     const htmlContent = `
                 <div style="text-align:left; font-size:16px;">
@@ -366,14 +378,23 @@
                     <p><b>ที่อยู่:</b> ${cells[3].innerText}</p>
                     <p><b>ยอดชำระ:</b> ${cells[4].innerText}</p>
                     ${slipLink ? `<p><b>สลิปชำระเงิน:</b></p>
-                                            <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
+                                    <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">`
                         : `<p><b>สลิปชำระเงิน:</b> ไม่มี</p>`}
+                    <div class="mt-3">
+                        <label><b>ชื่อผู้รับเงิน:</b></label>
+                        <select id="billStatus" class="form-select mt-1">
+                            <option value="นางนันทจิต เปียฉ่ำ">นางนันทจิต เปียฉ่ำ</option>
+                            <option value="นายศักดิ์สิทธิ์ หมัดรอ">นายศักดิ์สิทธิ์ หมัดรอ</option>
+                            <option value="นายเดชสกุล นุ้ยนิ่ง">นายเดชสกุล นุ้ยนิ่ง</option>
+                        </select>
+                    </div>
                     <div class="d-flex justify-content-end mt-3">
                         <button id="approveBtn" class="btn btn-primary me-2">อนุมัติ</button>
                         <button id="closeModel" class="btn btn-secondary">ปิด</button>
                     </div>
                 </div>
             `;
+
 
                     Swal.fire({
                         title: 'รายละเอียดบิล',
@@ -402,7 +423,8 @@
                                                 'Accept': 'application/json'
                                             },
                                             body: JSON.stringify({
-                                                bill_id: billId
+                                                bill_id: billId,
+                                                receive_by: selectedStatus // ✅ ใช้ค่าที่อ่านมา bill_id: billId,
                                             })
                                         });
                                     const data = await res.json();

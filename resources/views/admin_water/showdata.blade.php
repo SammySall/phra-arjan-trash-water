@@ -170,14 +170,6 @@
                         width: '500px'
                     });
 
-                    // event เปิด PDF
-                    Swal.getPopup().querySelector('#openPdfBtn').addEventListener('click', () => {
-                        window.open(
-                            `{{ route('admin_trash.show_pdf', '') }}/${rowData.id}`,
-                            '_blank');
-                    });
-
-
                     if (isPending) {
                         Swal.getPopup().querySelector('#acceptForm').addEventListener('click',
                             () => {

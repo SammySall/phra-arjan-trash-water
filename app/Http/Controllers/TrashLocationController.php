@@ -58,7 +58,7 @@ class TrashLocationController extends Controller
     public function confirmPayment(Request $request, int $id)
     {
         $location = TrashLocation::findOrFail($id);
-
+        
         try {
             $location->status = 'เสร็จสิ้น'; // ปรับให้ตรงกับ Blade
             $location->save();
@@ -309,8 +309,8 @@ class TrashLocationController extends Controller
         try {
             $bill = Bill::findOrFail($request->bill_id);
             $bill->status = 'ชำระแล้ว';
+            $bill->receive_by = $request->receive_by;
             $bill->save();
-
             return response()->json([
                 'success' => true,
                 'message' => 'บิลถูกอนุมัติเรียบร้อยแล้ว'

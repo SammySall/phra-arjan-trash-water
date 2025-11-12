@@ -233,11 +233,20 @@
                         ${bill.bill.slip_url ? `<p><b>สลิปชำระเงิน:</b></p>
                     <img src="${bill.bill.slip_url}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">`
                     : `<p><b>สลิปชำระเงิน:</b> ไม่มี</p>`}
+                    <div class="mt-3">
+                        <label><b>ชื่อผู้รับเงิน:</b></label>
+                        <select id="billStatus" class="form-select mt-1">
+                            <option value="นางนันทจิต เปียฉ่ำ">นางนันทจิต เปียฉ่ำ</option>
+                            <option value="นายศักดิ์สิทธิ์ หมัดรอ" >นายศักดิ์สิทธิ์ หมัดรอ</option>
+                            <option value="นายเดชสกุล นุ้ยนิ่ง" >นายเดชสกุล นุ้ยนิ่ง</option>
+                        </select>
+                    </div>
                         <div class="d-flex justify-content-end mt-3">
                             <button class="btn btn-primary me-2 approve-btn">อนุมัติ</button>
                             <button class="btn btn-secondary close-modal">ปิด</button>
                         </div>
                     </div>
+                    
                     `;
 
                 Swal.fire({
@@ -254,6 +263,10 @@
                         popup.querySelector('.approve-btn').addEventListener(
                             'click', async () => {
                                 try {
+                                    const selectedStatus = popup
+                                        .querySelector('#billStatus')
+                                        .value; // ✅ เพิ่มตรงนี้
+
                                     const approveRes = await fetch(
                                         "{{ route('admin.water.verify_payment.approveBill') }}", {
                                             method: 'POST',
@@ -262,16 +275,18 @@
                                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                                             },
                                             body: JSON.stringify({
-                                                bill_id: billId
+                                                bill_id: billId,
+                                                receive_by: selectedStatus // ✅ ใช้ค่าที่อ่านมา
                                             })
                                         });
+
                                     const data = await approveRes
-                                        .json();
+                                .json();
                                     if (approveRes.ok && data.success) {
                                         Swal.fire('สำเร็จ', data
                                                 .message, 'success')
                                             .then(() => location
-                                                .reload());
+                                            .reload());
                                     } else {
                                         Swal.fire('ผิดพลาด', data
                                             .message ||
@@ -284,6 +299,7 @@
                                         'error');
                                 }
                             });
+
                     }
                 });
 
