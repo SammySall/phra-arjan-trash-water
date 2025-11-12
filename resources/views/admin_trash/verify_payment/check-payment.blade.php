@@ -56,7 +56,8 @@
                     @forelse($location->bills as $bill)
                         <tr>
                             <td>{{ ($locations->currentPage() - 1) * $locations->perPage() + $loop->iteration }}</td>
-                            <td>{{ $bill->paid_date ? $bill->paid_date->format('Y-m-d') : '-' }}</td>
+                            <td> {{ $bill->paid_date ? \Carbon\Carbon::parse($bill->paid_date)->format('Y-m-d') : '-' }}
+                            </td>
                             <td>{{ $location->name }}</td>
                             <td>{{ $location->address }}</td>
                             <td>{{ number_format($bill->amount, 2) }}</td>
@@ -164,7 +165,7 @@
                     <p><b>ที่อยู่:</b> ${cells[3].innerText}</p>
                     <p><b>ยอดชำระ:</b> ${cells[4].innerText}</p>
                     ${slipLink ? `<p><b>สลิปชำระเงิน:</b></p>
-                                    <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
+                                            <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
                         : `<p><b>สลิปชำระเงิน:</b> ไม่มี</p>`}
                     <div class="d-flex justify-content-end mt-3">
                         <button id="approveBtn" class="btn btn-primary me-2">อนุมัติ</button>
@@ -256,7 +257,8 @@
                     @forelse($location->bills as $bill)
                         <tr>
                             <td>{{ ($locations->currentPage() - 1) * $locations->perPage() + $loop->iteration }}</td>
-                            <td>{{ $bill->paid_date ? $bill->paid_date->format('Y-m-d') : '-' }}</td>
+                            <td> {{ $bill->paid_date ? \Carbon\Carbon::parse($bill->paid_date)->format('Y-m-d') : '-' }}
+                            </td>
                             <td>{{ $location->name }}</td>
                             <td>{{ $location->address }}</td>
                             <td>{{ number_format($bill->amount, 2) }}</td>
@@ -364,7 +366,7 @@
                     <p><b>ที่อยู่:</b> ${cells[3].innerText}</p>
                     <p><b>ยอดชำระ:</b> ${cells[4].innerText}</p>
                     ${slipLink ? `<p><b>สลิปชำระเงิน:</b></p>
-                                    <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
+                                            <img src="${slipLink}" alt="Slip" style="width:100%; max-height:400px; border:1px solid #ccc; padding:5px;">` 
                         : `<p><b>สลิปชำระเงิน:</b> ไม่มี</p>`}
                     <div class="d-flex justify-content-end mt-3">
                         <button id="approveBtn" class="btn btn-primary me-2">อนุมัติ</button>

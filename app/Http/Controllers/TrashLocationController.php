@@ -287,7 +287,6 @@ class TrashLocationController extends Controller
         ->paginate($perPage)
         ->appends(['search' => $search, 'data_table_length' => $perPage]);
 
-
         return view('admin_trash.verify_payment.check-payment', compact('locations', 'search', 'perPage'));
     }
 

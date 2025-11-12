@@ -1021,7 +1021,7 @@ public function confirmPaymentRequestEng($type)
             'fields','day','month','year','uploadedFiles'
         ))
         ->setPaper('A4', 'portrait')
-        ->stream('ใบเสร็จค่ามูลฝอย.pdf');
+        ->stream('ใบเสร็จค่าน้ำประปา.pdf');
     }
 
     public function saveLicense($id)

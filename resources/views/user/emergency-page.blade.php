@@ -25,19 +25,19 @@
                         {{ empty($type) ? '-- โปรดเลือกเหตุผล --' : '' }}
                     </option>
                     <option value="water-leak" {{ ($type ?? '') == 'water-leak' ? 'selected' : '' }}>น้ำรั่ว</option>
-                    <option value="fire" {{ ($type ?? '') == 'fire' ? 'selected' : '' }}>ไฟไหม้</option>
+                    {{-- <option value="fire" {{ ($type ?? '') == 'fire' ? 'selected' : '' }}>ไฟไหม้</option>
                     <option value="tree-fall" {{ ($type ?? '') == 'tree-fall' ? 'selected' : '' }}>ต้นไม้ล้ม</option>
                     <option value="broken-road" {{ ($type ?? '') == 'broken-road' ? 'selected' : '' }}>ถนนเสีย</option>
-                    <option value="elec-broken" {{ ($type ?? '') == 'elec-broken' ? 'selected' : '' }}>ไฟเสีย</option>
+                    <option value="elec-broken" {{ ($type ?? '') == 'elec-broken' ? 'selected' : '' }}>ไฟเสีย</option> --}}
                 </select>
             </div>
 
             <!-- ✅ คอลัมน์ซ้าย: แผนที่ -->
             <div class="col-md-7 mb-3">
                 <div id="map" style="height: 400px; border-radius: 15px; overflow: hidden;"></div>
-                <div class="d-flex justify-content-end mt-2">
+                {{-- <div class="d-flex justify-content-end mt-2">
                     <img src="../../img/Emergency/Banner.png" alt="ตำแหน่งของคุณ" class="emergency-banner">
-                </div>
+                </div> --}}
             </div>
 
             <!-- ✅ คอลัมน์ขวา: ฟอร์ม -->
@@ -91,7 +91,7 @@
             }).addTo(map);
 
             var userIcon = L.icon({
-                iconUrl: '../../img/ToxicTrash/Icon-2.png',
+                iconUrl: '../../../img/admin-water/1.png',
                 iconSize: [20, 32],
                 iconAnchor: [10, 32],
                 popupAnchor: [0, -32]
