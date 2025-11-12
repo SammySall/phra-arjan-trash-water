@@ -55,20 +55,18 @@ class LoginController extends Controller
             // ✅ ดึง URL ก่อนหน้า (ถ้ามี)
             $previousUrl = Session::pull('url.intended', '/');
 
-            // ✅ ตรวจ path เพื่อ redirect
-            if (str_contains($previousUrl, 'water')) {
-                return redirect('/user/waterworks');
-            } elseif (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash')) {
-                return redirect('/user/waste_payment');
-            }
-
             // ✅ redirect ตาม role
             if ($user->role === 'admin-trash') {
                 return redirect('/admin/waste_payment');
             } elseif ($user->role === 'admin-water') {
-                return redirect('/admin/emergency/dashboard');
+                return redirect('/admin/waterworks/showdata');
             } elseif ($user->role === 'user') {
-                return redirect('/user/waste_payment'); // default สำหรับ user
+                // ✅ ตรวจ path เพื่อ redirect
+                if (preg_match('//user/(waste|trash)/', $previousUrl)) {
+                    return redirect('/user/waste_payment');
+                } elseif (preg_match('//user/water/', $previousUrl)) {
+                    return redirect('/user/waterworks');
+                }
             }
 
             // fallback
@@ -90,7 +88,7 @@ class LoginController extends Controller
         // ตรวจสอบ path ก่อน logout แล้ว redirect ไปยัง path ที่เหมาะสม
         if (str_contains($previousUrl, 'water')) {
             return redirect('/user/waterworks');
-        } elseif (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash') ) {
+        } else {
             return redirect('/user/waste_payment');
         }
 
