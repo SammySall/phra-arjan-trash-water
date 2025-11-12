@@ -1,0 +1,17 @@
+{
+    "sarabun": {
+        "normal": "sarabun_normal_f72ee8103ffe673f2f63fd5f2a3f15b5"
+    },
+    "sarabun-bold": {
+        "bold": "D:\\XAMPP\\htdocs\\eservice\\storage\\fonts\/sarabun_bold_bold_829bdc07322b7e89916a70f25501b625",
+        "normal": "sarabun_bold_normal_829bdc07322b7e89916a70f25501b625"
+    },
+    "thsarabunnew": {
+        "normal": "D:\\New folder (2)\\phra-arjan-trash-water\\storage\\fonts\/thsarabunnew_normal_82e16ebe6ebaec790302d37669d4f6b7",
+        "bold": "thsarabunnew_bold_b07b30ee945f40469ed95cb277f9ab03"
+    },
+    "thsarabannew": {
+        "normal": "D:\\New folder (2)\\test-trushsystem\\storage\\fonts\/\/thsarabannew_normal_f72ee8103ffe673f2f63fd5f2a3f15b5",
+        "bold": "thsarabannew_bold_5c6fa4d6f9ea4ba66bcaf7b4c7228f1a"
+    }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination Example</title>
+    <style>
+        /* ตั้งค่าพื้นฐานและฟอนต์ */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f7f9fc;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Container หลักของ Pagination */
+        .pagination {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* กำหนดระยะห่างระหว่างแต่ละปุ่ม */
+        }
+
+        /* สไตล์ของปุ่มทุกปุ่ม (a) */
+        .pagination a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;  /* ความกว้าง */
+            height: 40px; /* ความสูง */
+            border-radius: 50%; /* ทำให้ขอบมนเป็นวงกลม */
+            text-decoration: none; /* เอาเส้นใต้ลิงก์ออก */
+            color: #4285f4; /* สีตัวอักษรตั้งต้น */
+            font-weight: 600;
+            font-size: 16px;
+            transition: background-color 0.3s, color 0.3s; /* เพิ่มอนิเมชันตอนเปลี่ยนสี */
+        }
+        
+        /* สไตล์สำหรับปุ่มที่เป็นตัวเลข */
+        .pagination a.page-number {
+            background-color: #e9f2ff; /* สีพื้นหลังฟ้าอ่อน */
+        }
+
+        /* สไตล์สำหรับปุ่มที่ถูกเลือกอยู่ (active) */
+        .pagination a.active {
+            background-color: #4285f4; /* สีพื้นหลังน้ำเงินเข้ม */
+            color: #ffffff; /* สีตัวอักษรขาว */
+            box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4); /* เพิ่มเงาให้ดูมีมิติ */
+        }
+
+        /* เอฟเฟกต์เมื่อนำเมาส์ไปชี้ (ยกเว้นปุ่ม active) */
+        .pagination a:not(.active):hover {
+            background-color: #dce7ff; /* ทำให้สีพื้นหลังเข้มขึ้นเล็กน้อย */
+            color: #3367d6;
+        }
+
+        /* สำหรับปุ่มลูกศรที่ไม่ต้องการให้มีพื้นหลัง */
+        .pagination a.arrow {
+            background-color: transparent;
+        }
+
+        .pagination a.arrow:hover {
+            background-color: #f0f0f0; /* เพิ่มพื้นหลังสีเทาอ่อนเมื่อชี้ */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="pagination">
+        <a href="#" class="arrow">&laquo;</a> <a href="#" class="arrow">&lt;</a>   <a href="#" class="page-number active">1</a>
+        <a href="#" class="page-number">2</a>
+        <a href="#" class="page-number">3</a>
+        <a href="#" class="arrow">&gt;</a>   <a href="#" class="arrow">&raquo;</a> </div>
+
+</body>
+</html>

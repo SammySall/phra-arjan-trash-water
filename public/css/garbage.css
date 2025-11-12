@@ -1,0 +1,62 @@
+.body-garbage-bg {
+    background-image: url("../img/menuuser/Body-BG.png");
+    background-size: cover;
+    background-position: top;
+    min-height: 185px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.body-waterworks-bg {
+    background-image: url("../img/water-menu-page/Body-BG.png");
+    background-size: cover;
+    background-position: top;
+    min-height: 185px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.link-garbage-btn {
+    max-width: 100%;
+    margin-top: 5%;
+    margin-bottom: 29%;
+    transition: all 0.3s ease;
+
+}
+
+.back-garbage-btn {
+    max-width: 10rem;
+    transition: all 0.3s ease;
+}
+
+.back-garbage-btn:hover {
+    transform: scale(1.1);
+
+}
+
+.link-garbage-btn:hover {
+    transform: scale(1.1);
+}
+
+.trash-toxic-banner {
+    max-height: 8vh;
+    transition: all 0.3s ease;
+}
+
+.trash-toxic-img {
+    max-width: 18vw;
+    transition: all 0.3s ease;
+}
+
+.payment-bg{
+    border-radius: 30px;
+    padding: 2rem;
+}
+
+.trash-arrow{
+    max-width: 85%;
+}

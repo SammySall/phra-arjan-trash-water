@@ -1,0 +1,12 @@
+.sum-bg {
+    background-image: url("../img/trash-bank/Object.png");
+    background-position: center; 
+    background-repeat: no-repeat;
+    text-align: center;   
+    color: white;
+    font-weight: bold; 
+}
+
+.sum-bg h3 {
+    font-size: 28px;
+}

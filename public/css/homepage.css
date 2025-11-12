@@ -1,0 +1,219 @@
+.image-stack {
+    position: relative;
+    width: fit-content;
+}
+
+.image-stack img {
+    display: block;
+}
+
+.bottom-img {
+    position: relative;
+    top: 15%;
+    margin-bottom: 10%;
+}
+
+.bottom-img a {
+    position: relative;
+}
+
+.top-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.top-phone-img {
+    position: absolute;
+    top: 48%;
+    left: 21%;
+    max-width: 130px;
+    transition: all 0.3s ease;
+}
+
+.phone-bg {
+    background-image: url("../img/homepage/Phone.png");
+    background-size: cover;
+    background-position: center;
+    height: 465px;
+}
+
+.emergency-bg {
+    background-image: url("../img/homepage/Banner.png");
+    background-size: cover;
+    background-position: center;
+    width: auto;
+    height: 400px;
+    padding-bottom: 13%;
+    padding-top: 35%;
+}
+
+.btn-hover-effect {
+    transition: all 0.3s ease;
+}
+
+.btn-hover-effect:hover {
+    transform: scale(1.1);
+}
+
+.btn-emergency {
+    max-width: 75px !important;
+    transition: all 0.3s ease;
+}
+
+.btn-emergency:hover {
+    transform: scale(1.1);
+}
+
+.btn-receive {
+    width: 350px;
+    transition: all 0.3s ease;
+}
+
+.btn-receive:hover {
+    transform: scale(1.1);
+}
+
+.btn-phone {
+    width: 200px;
+    transition: all 0.3s ease;
+}
+
+.btn-phone:hover {
+    transform: scale(1.1);
+}
+
+.top-phone-img:hover {
+    transform: scale(1.1);
+}
+
+.top-img:hover {
+    transform: scale(1.1);
+}
+
+/* ======================
+   Responsive Media Query
+====================== */
+@media (max-width: 1200px) {
+    .title-header {
+        font-size: 40px;
+    }
+
+    .sub-title-header {
+        font-size: 24px;
+    }
+
+    .logo-img {
+        max-width: 150px;
+    }
+
+    .btn-hover-effect {
+        max-width: 140px;
+    }
+
+    .title-footer {
+        font-size: 32px;
+    }
+
+    .font-bottom-login {
+        font-size: 14px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .title-header {
+        font-size: 32px;
+    }
+
+    .sub-title-header {
+        font-size: 20px;
+    }
+
+    .logo-img {
+        max-width: 120px;
+    }
+
+    .btn-hover-effect {
+        max-width: 120px;
+    }
+
+    .footer-location {
+        font-size: 14px;
+        padding: 0.2rem 0.7rem 0.2rem 2rem;
+    }
+
+    .title-footer {
+        font-size: 24px;
+    }
+
+    .font-bottom-login {
+        font-size: 12px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .title-header {
+        font-size: 20px;
+    }
+
+    .sub-title-header {
+        font-size: 16px;
+    }
+
+    .logo-img {
+        max-width: 100px;
+    }
+
+    .btn-hover-effect {
+        max-width: 100px;
+    }
+
+    .footer-location {
+        font-size: 12px;
+        padding: 0.2rem 0.5rem 0.2rem 1.5rem;
+    }
+
+    .title-footer {
+        font-size: 16px;
+    }
+
+    .font-bottom-login {
+        font-size: 12px !important;
+    }
+
+    /* ปรับขนาด phone-bg */
+    .phone-bg {
+        height: 200;
+    }
+
+    /* ซ่อน Desktop/Tablet */
+    .desktop-row {
+        display: none !important;
+    }
+
+    /* แสดง Mobile Layout */
+    .mobile-row {
+        display: block !important;
+    }
+
+    /* ปรับขนาด Emergency Buttons */
+    .btn-emergency {
+        max-width: 60px !important;
+    }
+
+    .btn-receive {
+        width: 200px;
+    }
+
+    .btn-phone {
+        width: 180px;
+        margin-left: 10%;
+    }
+
+    .top-phone-img {
+        width: 100px;
+        top: 47%;
+        left: 28%;
+    }
+}

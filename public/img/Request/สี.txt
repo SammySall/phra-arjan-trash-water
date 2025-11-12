@@ -1,0 +1,10 @@
+-สีตัวเลข 1 2 3 4
+Gradient
+#f31f3a : #c71b30
+
+-สีปุ่ม Side Menu
+#c71b30
+
+-สีหัวข้อ Side Menu
+Gradient
+#134e9e : #082149

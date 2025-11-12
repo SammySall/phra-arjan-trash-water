@@ -1,0 +1,150 @@
+/* ================= Backgrounds ================= */
+.body-bg {
+    background-image: url("../img/trash-system/Body-BG.png");
+    background-size: cover;
+    background-position: bottom;
+    min-height: 185px;
+    display: flex;
+}
+
+.sidebar-bg {
+    background-image: url("../img/trash-system/Sidebar.png");
+}
+
+.content-trash-bg {
+    background-image: url("../../../img/trash-system/Table-BG.png");
+    background-size: cover;
+    background-position: top;
+    min-height: 185px;
+}
+
+.complete-bg-img {
+    background-image: url('../img/trash-system/3.png');
+    padding: 1rem;
+    color: white;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.missed-bg-img {
+    background-image: url('../img/trash-system/2.png');
+    padding: 1rem;
+    color: white;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.wait-bg-img {
+    background-image: url('../img/trash-system/1.png');
+    padding: 1rem;
+    color: white;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
+
+.text-title-dashboard-bg {
+    background-color: white;
+    color: black;
+}
+
+.text-number-dashboard {
+    font-size: 4rem;
+}
+
+/* ================= Sidebar & Links ================= */
+.nav-link {
+    color: #333;
+    border-radius: 0.5rem;
+    margin-bottom: 4px;
+}
+
+.nav-link:hover {
+    background-color: #f0f0f0;
+}
+
+.nav-link.active {
+    background-color: #696cff;
+    color: white !important;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.375rem;
+    height: 2.375rem;
+    cursor: pointer;
+}
+
+.avatar i {
+    font-size: 2.375rem;
+}
+
+/* ================= Desktop / Mobile ================= */
+.desktop-only {
+    display: block;
+}
+
+.mobile-only {
+    display: none;
+}
+
+@media (max-width: 479px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: block !important;
+    }
+}
+
+/* ================= Mobile Hamburger Sidebar ================= */
+@media (max-width: 768px) {
+    .sidebar-bg {
+        position: fixed;
+        top: 0;
+        left: -250px;
+        width: 250px;
+        height: 100%;
+        z-index: 1050;
+        overflow-y: auto;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-bg.active {
+        left: 0;
+    }
+
+    body.overlay-active::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1040;
+    }
+
+    .body-bg {
+        flex-direction: column;
+    }
+
+    .p-4 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .wait-bg-img,
+    .missed-bg-img,
+    .complete-bg-img {
+        padding: 1rem;
+        margin-bottom: 2rem;
+        color: white;
+        height: 30vh;
+    }
+}

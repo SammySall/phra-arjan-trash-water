@@ -1,0 +1,174 @@
+/* ===== เมนูหลัก ===== */
+.menu-list {
+    background: #fff;
+    color: #000;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.menu-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item > a {
+    display: block;
+    padding: 14px 20px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    background: linear-gradient(90deg, #134e9e 0%, #082149 100%);
+    font-size: 18px;
+    transition: filter 0.3s;
+}
+
+.menu-item > a:hover {
+    filter: brightness(1.2);
+}
+
+/* ===== เมนูย่อย ===== */
+.submenu {
+    background: #f9f9f9;
+}
+
+.submenu li a {
+    display: block;
+    padding: 10px 35px;
+    color: #000;
+    font-size: 15px;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.submenu li a:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* ===== เมนูย่อยระดับ 2 ===== */
+.submenu-sub {
+    max-height: 0;
+    overflow: hidden;
+    background: #ececec;
+    border-top: 1px solid #ddd;
+    transition: max-height 0.3s ease;
+}
+
+.submenu-sub li a {
+    padding: 8px 50px;
+    font-size: 14px;
+}
+
+/* ===== เนื้อหาหลัก ===== */
+.request-content {
+    background: linear-gradient(to right, #029A94 0%, #004C57 100%);
+    color: #fff;
+    min-height: 100vh;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.form-content {
+    background: #fff;
+    color: #000;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-form-name {
+    display: inline-block;
+    position: relative;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: none;
+    text-align: center;
+}
+
+.header-form-name::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 30px;
+    padding: 2px;
+    background: linear-gradient(to right, #029A94, #004C57);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+}
+
+/* ===== ปุ่ม ===== */
+.btn-primary {
+    background: linear-gradient(90deg, #134e9e 0%, #082149 100%);
+    border: none;
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    filter: brightness(1.15);
+}
+
+/* ===== ตาราง ===== */
+.table th,
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 992px) {
+    .menu-list {
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    .menu-item > a {
+        font-size: 16px;
+        padding: 12px 15px;
+    }
+
+    .submenu li a {
+        padding: 10px 25px;
+    }
+
+    .submenu-sub li a {
+        padding: 8px 35px;
+    }
+
+    .request-content {
+        min-height: auto;
+        padding: 10px;
+    }
+
+    .form-content {
+        margin: 0 10px;
+        padding: 10px;
+    }
+
+    .header-form-name {
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .menu-item > a {
+        font-size: 14px;
+    }
+
+    .submenu li a,
+    .submenu-sub li a {
+        font-size: 13px;
+    }
+
+    .request-content {
+        padding: 8px;
+    }
+
+    .form-content {
+        margin: 0 5px;
+    }
+}
