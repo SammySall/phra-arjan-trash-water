@@ -148,8 +148,10 @@
             </span>
             <div>
                 <span>(</span>
-                <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                    {{ $fields['field_31'] ?? '' }}
+                @if ($fields['field_31'] !== null)
+                    <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
+                        {{ $fields['field_31'] ?? '' }}
+                @endif
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>
