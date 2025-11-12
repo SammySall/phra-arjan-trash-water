@@ -1,8 +1,8 @@
 body {
-    background-image: url("../img/register/BG.png");
+    background-image: url("../img/Login/BG.jpg");
     background-size: cover;
     background-position: bottom;
-    color: white;
+    color: darkblue;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -29,4 +29,10 @@ body {
 
 .header-text img {
     filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
+    font-weight: bold;
+}
+
+.img-login-banner{
+    width: auto;
+    height: 100vh;
 }
