@@ -144,20 +144,16 @@
                     </td>
                 </tr>
                 <!-- แถวรวม -->
-                <tr>
-                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">รวมรายรับ</td>
-                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">รวมรายจ่าย</td>
-                    <td style="border:1px solid #000; padding:5px; font-weight:bold;">{{ $fields['total'] ?? '' }}</td>
-                </tr>
+                
             </tbody>
         </table>
-
+{{-- 
         <span>เป็นเงิน</span>
         <span class="dotted-line"
             style="width: 30%;">{{ $fields['field_4'] ?? '-' }}.{{ $fields['field_15'] ?? '00' }}</span>
         <span>บาท (</span>
         <span class="dotted-line" style="width: 28%;">{{ $fields['field_20'] ?? '' }}</span>
-        <span>)</span>
+        <span>)</span> --}}
     </div>
 
     <div class="signature-section"
