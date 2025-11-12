@@ -145,7 +145,7 @@
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
                 @if ($fields['field_31'] !== null)
                     <img src="{{ public_path('img/signature/' . $fields['field_31'] . '.jpg') }}" alt="signature1"
-                        style="width:50%;">
+                        style="width:50%; margin-top:1rem;">
                 @endif
             </span>
             <div>
