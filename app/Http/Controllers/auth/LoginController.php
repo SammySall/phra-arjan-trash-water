@@ -72,7 +72,7 @@ class LoginController extends Controller
             }
 
             // fallback
-            return redirect('/user/waste_payment'); // default สำหรับ user
+            return redirect('/');
         }
 
         return back()->with('error', 'อีเมลหรือรหัสผ่านไม่ถูกต้อง');
@@ -90,7 +90,7 @@ class LoginController extends Controller
         // ตรวจสอบ path ก่อน logout แล้ว redirect ไปยัง path ที่เหมาะสม
         if (str_contains($previousUrl, 'water')) {
             return redirect('/user/waterworks');
-        } elseif (str_contains($previousUrl, 'waste_payment')) {
+        } elseif (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash') ) {
             return redirect('/user/waste_payment');
         }
 

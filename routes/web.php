@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\auth\LoginController;
 use App\Http\Controllers\TrashRequestController;
 use App\Http\Controllers\TrashLocationController;
 use App\Http\Controllers\GarbageController;
@@ -149,3 +149,4 @@ Route::get('/admin/non_payment/detail/{location}', [TrashLocationController::cla
 Route::get('/admin/non_payment/{trashLocationId}/export', [TrashLocationController::class, 'exportNonPaymentPdf'])
     ->name('admin.non_payment.export');
 Route::post('/admin/non-payment/upload-slip', [TrashLocationController::class, 'uploadSlip'])->name('admin.non_payment.upload_slip');
+
