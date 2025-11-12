@@ -51,7 +51,7 @@ Route::middleware('auth')->get('/user/request/history_request/{type}/{id}', [Tra
 Route::get('/user/waste_payment', function () {
     return view('user.garbage');
 });
-Route::prefix('user/waste_payment')->group(function() {
+Route::prefix('user/waste_payment')->middleware('auth')->group(function() {
     Route::get('/trash_bank', [TrashBankController::class, 'index'])->name('user.trash_bank');
 });
 Route::prefix('admin')->middleware('auth')->group(function() {
