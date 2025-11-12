@@ -154,3 +154,7 @@ Route::get('/admin/non_payment/{trashLocationId}/export', [TrashLocationControll
     ->name('admin.non_payment.export');
 Route::post('/admin/non-payment/upload-slip', [TrashLocationController::class, 'uploadSlip'])->name('admin.non_payment.upload_slip');
 
+Route::get('/link-storage', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created!';
+});
