@@ -61,11 +61,12 @@ class LoginController extends Controller
             } elseif ($user->role === 'admin-water') {
                 return redirect('/admin/waterworks/showdata');
             } elseif ($user->role === 'user') {
-                if (str_contains($previousUrl, 'waste') || str_contains($previousUrl, 'trash')) {
+                if (preg_match('/user\/(waste|trash)/', $previousUrl)) {
                     return redirect('/user/waste_payment');
-                } elseif (str_contains($previousUrl, 'water')) {
+                } elseif (preg_match('/user\/water/', $previousUrl)) {
                     return redirect('/user/waterworks');
                 }
+
             }
 
 
