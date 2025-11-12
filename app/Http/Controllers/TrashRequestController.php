@@ -963,7 +963,7 @@ public function confirmPaymentRequestEng($type)
             'field_12' => $trashRequest->place_type ?? '',
             'field_13' => $trashRequest->alley ?? '',
             'field_14' => $trashRequest->road ?? '',
-            'field_31' => $bill->receive_by ?? '',
+            'field_31' => $bill->receive_by ?? null,
         ];
 
         $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
@@ -1011,7 +1011,7 @@ public function confirmPaymentRequestEng($type)
             'field_7'  => $waterLocation?->address ?? '',
             'field_8'  => $waterLocation?->water_user_no ?? '',
             'field_9'  => $waterLocation?->province ?? '',
-            'field_12' => $bill->receive_by ?? '',
+            'field_12' => $bill->receive_by ?? null,
             'field_13' => $trashRequest->alley ?? '',
             'field_14' => $trashRequest->road ?? '',
         ];
