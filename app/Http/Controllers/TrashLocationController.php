@@ -300,7 +300,7 @@ class TrashLocationController extends Controller
         return view('admin_trash.dashboard', compact('paidCount', 'unpaidCount', 'pendingCount'));
     }
 
-    public function approveBill(Request $request)
+    public function receiveBill(Request $request)
     {
         $request->validate([
             'bill_id' => 'required|exists:bills,id',
@@ -308,7 +308,7 @@ class TrashLocationController extends Controller
 
         try {
             $bill = Bill::findOrFail($request->bill_id);
-            $bill->status = 'ชำระแล้ว';
+            $bill->status = 'รออนุมัติ';
             $bill->receive_by = $request->receive_by;
             $bill->save();
             return response()->json([
@@ -323,5 +323,71 @@ class TrashLocationController extends Controller
         }
     }
 
-    
+    public function showApproveList(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('data_table_length', 10);
+
+        // query บิลทั้งหมดที่รออนุมัติ
+        $billsQuery = Bill::with('trashLocation.owner')
+            ->where('type', 'trash-request')
+            ->where('status', 'รออนุมัติ')
+            ->orderBy('created_at', 'desc');
+
+            if ($search) {
+            // ค้นหาชื่อเจ้าของ
+            $billsQuery->whereHas('waterLocation.owner', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+        }
+
+        $bills = ($perPage == -1) 
+            ? $billsQuery->get() 
+            : $billsQuery->paginate($perPage)->appends([
+                'search' => $search,
+                'data_table_length' => $perPage,
+            ]);
+
+        return view('admin_trash.approve-bill', compact('bills', 'search', 'perPage'));
+    }
+
+    public function approveBill(Request $request)
+    {
+        $request->validate([
+            'bill_id' => 'required|exists:bills,id',
+            'receive_by' => 'nullable|string'
+        ]);
+
+        $bill = Bill::findOrFail($request->bill_id);
+        $bill->status = 'ชำระแล้ว';
+        $bill->receive_by = $request->receive_by;
+        $bill->save();
+
+        if (!$bill->trash_location_id) {
+            return response()->json(['error' => 'bill ไม่มี trash_location_id'], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'บิลถูกอนุมัติและอัปเดตข้อมูล TrashRequest เรียบร้อยแล้ว',
+        ], 200);
+
+    }
+
+    // API ดึงข้อมูลบิลสำหรับ Modal
+    public function getBillForModal(Request $request)
+    {
+        $bill = Bill::with('trashLocation.owner')->findOrFail($request->bill_id);
+
+        return response()->json([
+            'bill' => [
+                'id' => $bill->id,
+                'user' => $bill->trashLocation->owner->name ?? '-',
+                'amount' => number_format($bill->amount, 2),
+                'paid_date' => $bill->created_at->format('d/m/Y'),
+                'slip_url' => $bill->slip_path ? asset('storage/' . $bill->slip_path) : null,
+                'receive_by' =>$bill->receive_by ?? '-'
+            ]
+        ]);
+    }
 }

@@ -137,12 +137,12 @@ Route::get('/admin/trash_installer/detail/{id}', [TrashLocationController::class
 
 Route::get('/admin/verify_payment', [TrashLocationController::class, 'verifyPaymentsList'])
     ->name('admin.verify_payment');
-Route::post('/admin/verify_payment/approve-bill', [TrashLocationController::class, 'approveBill'])
-    ->name('admin.verify_payment.approveBill');
+Route::post('/admin/verify_payment/receive-bill', [TrashLocationController::class, 'receiveBill'])
+    ->name('admin.verify_payment.receive-bill');
 Route::get('/admin/water/verify_payment/get-bill', [WaterController::class, 'getBill'])
     ->name('admin.water.verify_payment.getBill');
-Route::post('/admin/water/verify_payment/approve-bill', [WaterController::class, 'approveBill'])
-    ->name('admin.water.verify_payment.approveBill');
+Route::post('/admin/water/verify_payment/receive-bill', [WaterController::class, 'receiveBill'])
+    ->name('admin.water.verify_payment.receiveBill');
 
 Route::get('/admin/payment_history', [TrashLocationController::class, 'paymentHistoryList'])
     ->name('admin.payment_history');
@@ -155,6 +155,34 @@ Route::get('/admin/non_payment/detail/{location}', [TrashLocationController::cla
 Route::get('/admin/non_payment/{trashLocationId}/export', [TrashLocationController::class, 'exportNonPaymentPdf'])
     ->name('admin.non_payment.export');
 Route::post('/admin/non-payment/upload-slip', [TrashLocationController::class, 'uploadSlip'])->name('admin.non_payment.upload_slip');
+
+Route::prefix('admin/waterworks')->group(function () {
+    // ✅ หน้าแสดงรายการใบเสร็จทั้งหมดที่รออนุมัติ
+    Route::get('/approve-bill', [WaterController::class, 'showApproveList'])
+        ->name('admin.water.approve_bill');
+
+    // ✅ API อนุมัติบิล (ใช้กับปุ่มอนุมัติใน JS)
+    Route::post('/approve-bill', [WaterController::class, 'approveBill'])
+        ->name('admin.water.approve_bill.submit');
+
+    // API ดึงข้อมูลบิลสำหรับ Modal
+    Route::get('/get-bill', [WaterController::class, 'getBillForModal'])
+        ->name('admin.water.verify_payment.getBill');
+});
+
+Route::prefix('admin/approve_bill')->group(function () {
+    // ✅ หน้าแสดงรายการใบเสร็จทั้งหมดที่รออนุมัติ
+    Route::get('/', [TrashLocationController::class, 'showApproveList'])
+        ->name('admin.approve_bill');
+
+    // ✅ API อนุมัติบิล (ใช้กับปุ่มอนุมัติใน JS)
+    Route::post('/', [TrashLocationController::class, 'approveBill'])
+        ->name('admin.approve_bill.submit');
+
+    // API ดึงข้อมูลบิลสำหรับ Modal
+    Route::get('/get-bill', [TrashLocationController::class, 'getBillForModal'])
+        ->name('admin.verify_payment.getBill');
+});
 
 Route::get('/link-storage', function () {
     Artisan::call('storage:link');

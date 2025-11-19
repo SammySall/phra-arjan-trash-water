@@ -56,9 +56,9 @@ class LoginController extends Controller
             $previousUrl = Session::pull('url.intended', '/');
 
             // ✅ redirect ตาม role
-            if ($user->role === 'admin-trash') {
+            if (str_contains($user->role, 'admin-trash')) {
                 return redirect('/admin/waste_payment');
-            } elseif ($user->role === 'admin-water') {
+            } elseif (str_contains($user->role, 'admin-water')) {
                 return redirect('/admin/waterworks/showdata');
             } elseif ($user->role === 'user') {
                 if (preg_match('/user\/(waste|trash)/', $previousUrl)) {

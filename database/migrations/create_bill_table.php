@@ -34,7 +34,7 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             $table->decimal('amount', 10, 2);
-            $table->enum('status', ['ยังไม่ชำระ', 'รอการตรวจสอบ', 'ชำระแล้ว'])
+            $table->enum('status', ['ยังไม่ชำระ', 'รอการตรวจสอบ','รออนุมัติ', 'ชำระแล้ว'])
                 ->default('ยังไม่ชำระ');
             $table->date('due_date');
             $table->date('paid_date')->nullable();

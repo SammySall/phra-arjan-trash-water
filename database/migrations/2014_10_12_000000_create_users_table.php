@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('address');
             $table->string('tel', 10)->nullable();
             $table->string('id_card', 13)->nullable();
-            $table->enum('role', ['admin-trash', 'admin-e-service','admin-emergency','admin-engineer','admin-health', 'user','admin-request','admin-water'])->default('user');
+            $table->enum('role', ['admin-trash', 'admin-e-service','admin-emergency','admin-engineer','admin-health', 'user','admin-request','admin-water','admin-treasury'])->default('user');
             $table->rememberToken();
             $table->timestamps();
             $table->text('api_token')->nullable();
@@ -53,7 +53,7 @@ return new class extends Migration
                 'address' => '67/78',
                 'tel' => '0000000000',
                 'id_card' => '1111111111111',
-                'role' => 'admin-e-service',
+                'role' => 'admin-trash-head',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],[
@@ -90,13 +90,13 @@ return new class extends Migration
                 'updated_at' => now(),
             ],
             [
-                'name' => 'Admin Engineer',
+                'name' => 'หัวหน้ากองคลัง',
                 'email' => 'admin03@eservice.go.th',
                 'password' => Hash::make('123456789'),
                 'address' => '123 หมู่ 5',
                 'tel' => '0000000000',
                 'id_card' => '1111111111111',
-                'role' => 'admin-engineer',
+                'role' => 'admin-water-head',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

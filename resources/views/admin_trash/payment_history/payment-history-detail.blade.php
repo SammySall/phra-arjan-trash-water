@@ -91,7 +91,8 @@
                                 <td>
                                     @if ($bill->slip_path)
                                         <a href="{{ asset('storage/' . $bill->slip_path) }}" target="_blank">
-                                            <i class="bi bi-file-earmark-image"></i>
+                                            <img src="{{ url('../img/trash_verify/5.png') }}" class="img-fluid logo-img"
+                                                alt="Slip">
                                         </a>
                                     @else
                                         -
@@ -104,7 +105,7 @@
                                         @endphp
                                     @endif
                                     <img src="{{ url('../img/icon/' . $bill->status . '.png') }}"
-                                        class="img-fluid logo-img" alt="{{ $bill->status }}">
+                                        class="img-fluid logo-img" alt="{{ $bill->status }}" style="width: 32px">
                                 </td>
 
                                 <td class="text-center">
@@ -119,8 +120,8 @@
                                             title="รอการตรวจสอบ ไม่สามารถดำเนินการได้">
                                             <i class="bi bi-archive"></i>
                                         </button>
-                                    @elseif ($bill->status === 'ชำระแล้ว')
-                                        <button type="button" class="btn btn-danger btn-sm">
+                                    @elseif ($bill->status === 'ชำระแล้ว' || $bill->status === 'รออนุมัติ')
+                                        <button type="button" class="btn btn-sm">
                                             <a href="{{ route('admin.bill.pdf', $bill->trash_location_id) }}"
                                                 target="_blank" class="btn btn-danger btn-sm">
                                                 <i class="bi bi-filetype-pdf"></i>
@@ -299,7 +300,8 @@
                                     <td>
                                         @if ($bill->slip_path)
                                             <a href="{{ asset('storage/' . $bill->slip_path) }}" target="_blank">
-                                                <i class="bi bi-file-earmark-image"></i>
+                                                <img src="{{ url('../img/trash_verify/5.png') }}"
+                                                    class="img-fluid logo-img" alt="Slip">
                                             </a>
                                         @else
                                             -
@@ -316,7 +318,7 @@
                                             <span class="text-secondary">{{ $bill->status }}</span>
                                         @endif
                                         <img src="{{ url('../img/icon/' . $bill->status . '.png') }}"
-                                            class="img-fluid logo-img" alt="{{ $bill->status }}">
+                                            class="img-fluid logo-img" alt="{{ $bill->status }}" style="width: 32px">
                                     </td>
 
                                     <td class="text-center">

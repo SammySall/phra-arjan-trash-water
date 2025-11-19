@@ -72,7 +72,7 @@
 <body>
     <div style="margin-top: 20%; text-align: center;">
         {{-- <img src="{{ public_path('img/menuuser/LOGO.png') }}" alt="LOGO" style="width:150px; margin-bottom:10px;"> --}}
-        <div class="title_doc">ใบเสร็จรับเงินค่าประปา</div>
+        <div class="title_doc">ใบเสร็จรับเงินค่ามูลฝอย</div>
     </div>
 
 
@@ -86,9 +86,9 @@
     </div>
 
     <div class="box_text" style="text-align: left; margin-left:5rem;">
-        <span>ผู้ใช้น้ำเลขที่</span>
+        <span>ผู้ใช้ขยะเลขที่</span>
         <span class="dotted-line" style="width: 20%;">
-            {{ $fields['field_8'] ?? '-' }}</span>
+            {{ $fields['field_20'] ?? '-' }}</span>
         <span>ชื่อ</span>
         <span class="dotted-line" style="width: 47%;">{{ $fields['field_2'] ?? '' }}
             {{ $fields['field_1'] ?? '-' }}</span>
@@ -96,64 +96,28 @@
 
     <div class="box_text" style="text-align: left; margin-left:5rem;">
         <span>ที่อยู่</span>
-        <span class="dotted-line" style="width: 78%;">
-            {{ $fields['field_7'] ?? '-' }}
+        <span class="dotted-line" style="width: 79%;">
+            {{ $fields['field_5'] ?? '-' }}
+            {{ $fields['field_6'] ?? '' }}
+            {{ $fields['field_7'] ?? '' }}
+            {{ $fields['field_8'] ?? '' }}
         </span>
         <br>
         <span>ประเภท</span>
-        <span class="dotted-line" style="width: 28%; text-align: left;">
-            {{ $fields['field_20'] ?? '' }}</span>
-        <span>เส้นทางการเก็บเงิน</span>
-        <span class="dotted-line" style="width: 29%; text-align: left;">
-            {{ $fields['field_20'] ?? '' }}</span>
-        <br>
-        <span>ค่าน้ำประปาประจำเดือน</span>
-        <span class="dotted-line" style="width: 60%; text-align: left;">
+        <span class="dotted-line" style="width: 32%; text-align: left;">
+            {{ $fields['field_20'] ?? '-' }}</span>
+        <span>ประจำเดือน</span>
+        <span class="dotted-line" style="width: 32%; text-align: left;">
             {{ $fields['field_3'] ?? '-' }}</span>
         <br>
 
-        <table style="width:83%; border-collapse: collapse; font-family: 'THSarabunNew', sans-serif;">
-            <thead>
-                <tr>
-                    <th style="border:1px solid #000; padding:5px; width:30%; text-align:center;">รายการ</th>
-                    <th style="border:1px solid #000; padding:5px; width:10%; text-align:center;">
-                        จำนวนหน่วยของมาตราวัดน้ำ</th>
-                    <th style="border:1px solid #000; padding:5px; width:30%; text-align:center;">จำนวนเงิน (บาท)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="border:1px solid #000; padding:5px; vertical-align: top; text-align: right;">
-                        จดครั้งนี้วันที่ <span class="dotted-line" style="width: 63%; text-align: left;">
-                            {{ $fields['field_20'] ?? '' }}</span><br>
-                        จดครั้งก่อนวันที่ <span class="dotted-line" style="width: 55%; text-align: left;">
-                            {{ $fields['field_20'] ?? '' }}</span><br>
-                        <label style="text-align: right;">จำนวนหน่วยที่ใช้</label>
-                    </td>
-                    <td style="border:1px solid #000; padding:5px; vertical-align: top;">
-                        <span class="dotted-line" style="width: 100%; text-align: left;">
-                            {{ $fields['field_6'] ?? '-' }}</span><br>
-                        <span class="dotted-line" style="width: 100%; text-align: left;">
-                            {{ $fields['field_5'] ?? '-' }}</span><br>
-                        <span class="dotted-line" style="width: 100%; text-align: left;">
-                            {{ $fields['field_6'] - $fields['field_5'] ?? '-' }}</span><br>
-                    </td>
-                    <td style="border:1px solid #000; padding:5px; vertical-align: center; text-align:right;">
-                        <span class="dotted-line" style="width: 100%; text-align: left;">
-                            {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span>
-                    </td>
-                </tr>
-                <!-- แถวรวม -->
 
-            </tbody>
-        </table>
-        {{-- 
         <span>เป็นเงิน</span>
         <span class="dotted-line"
             style="width: 30%;">{{ $fields['field_4'] ?? '-' }}.{{ $fields['field_15'] ?? '00' }}</span>
         <span>บาท (</span>
         <span class="dotted-line" style="width: 28%;">{{ $fields['field_20'] ?? '' }}</span>
-        <span>)</span> --}}
+        <span>)</span>
     </div>
 
     <div class="signature-section"
@@ -179,15 +143,15 @@
             <span>(ลงนาม)</span>
             <span class="dotted-line"
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
-                @if ($fields['field_12'] !== null && ($fields['status'] === 'รออนุมัติ'||$fields['status'] === 'ชำระแล้ว'))
-                    <img src="{{ public_path('img/signature/' . $fields['field_12'] . '.jpg') }}" alt="signature1"
+                @if ($fields['field_31'] !== null && ($fields['status'] === 'รออนุมัติ'||$fields['status'] === 'ชำระแล้ว'))
+                    <img src="{{ public_path('img/signature/' . $fields['field_31'] . '.jpg') }}" alt="signature1"
                         style="width:50%; margin-top:1.5rem;">
                 @endif
             </span>
             <div>
                 <span>(</span>
                 <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                    {{ $fields['field_12'] && ($fields['status'] === 'รออนุมัติ'||$fields['status'] === 'ชำระแล้ว') ? $fields['field_12'] : '' }}
+                    {{ $fields['field_31'] && ($fields['status'] === 'รออนุมัติ'||$fields['status'] === 'ชำระแล้ว') ? $fields['field_31'] : '' }}
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>
@@ -198,14 +162,14 @@
             <span>(ลงนาม)</span>
             <span class="dotted-line"
                 style="width: 40%; display: inline-block; text-align: center;  margin-right:1.5rem;">
-                @if ($fields['field_12'] !== null && $fields['status'] === 'ชำระแล้ว')
+                @if ($fields['field_31'] !== null && $fields['status'] === 'ชำระแล้ว')
                     <img src="{{ public_path('img/signature/1.jpg') }}" alt="signature1" style="width:50%;">
                 @endif
             </span>
             <div>
                 <span>(</span>
                 <span class="dotted-line" style="width: 35%; display: inline-block; text-align: center;">
-                    {{ $fields['field_12'] && $fields['status'] === 'ชำระแล้ว' ? 'นางสาวสมยา จันทร์ฟัก' : '' }}
+                    {{ $fields['field_31'] && $fields['status'] === 'ชำระแล้ว' ? 'นางสาวสมยา จันทร์ฟัก' : '' }}
                 </span>
                 <span style=" margin-right:1.6rem;">)</span>
             </div>

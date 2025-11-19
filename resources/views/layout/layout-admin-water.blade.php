@@ -16,6 +16,7 @@
 
     @php
         $path = request()->path();
+        $tokenData = json_decode(\Illuminate\Support\Facades\Crypt::decryptString(session('token')), true);
     @endphp
 
     <!-- Sidebar -->
@@ -51,6 +52,17 @@
                 </a>
             </li>
 
+            @if (isset($tokenData['role']) && $tokenData['role'] === 'admin-water-head')
+                <li>
+                    <a href="/admin/waterworks/approve-bill"
+                        class="nav-link {{ Str::contains($path, 'approve-bill') ? 'active' : '' }}">
+                        <img src="{{ url('../../img/admin-water/Icon-6.png') }}" alt="icon-3"
+                            class="img-fluid logo-img" style="width: 20px;">
+                        อนุมัติใบเสร็จ
+                    </a>
+                </li>
+            @endif
+
             <li>
                 <a href="/admin/waterworks/emergency"
                     class="nav-link {{ Str::contains($path, 'emergency') ? 'active' : '' }}">
@@ -59,6 +71,7 @@
                     แจ้งเหตุ
                 </a>
             </li>
+
         </ul>
     </div>
 
@@ -78,12 +91,6 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if (session('token'))
-                        @php
-                            $tokenData = json_decode(
-                                \Illuminate\Support\Facades\Crypt::decryptString(session('token')),
-                                true,
-                            );
-                        @endphp
                         <li class="dropdown-item-text d-flex align-items-end gap-2">
                             <i class="bi bi-person-circle"></i>
                             <span>{{ $tokenData['name'] }}</span>

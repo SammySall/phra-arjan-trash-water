@@ -72,7 +72,7 @@
                             <td>{{ \Carbon\Carbon::parse($bill->created_at)->format('d/m/Y') }}</td>
                             <td>
                                 <img src="{{ url('../img/icon/' . $bill->status . '.png') }}" alt="{{ $bill->status }}"
-                                    class="img-fluid logo-img">
+                                    class="img-fluid logo-img" style="width: 32px">
                             </td>
                             <td>
                                 <a href="{{ route('admin.water_bill.pdf', $bill->id) }}" target="_blank"
@@ -226,7 +226,7 @@
                 const bill = await res.json();
 
                 const htmlContent = `
-                    <div style="text-align:left; font-size:16px;">
+                    <div style="text-align:left; font-size:16px; padding:20px;">
                         <p><b>วันที่ชำระ:</b> ${bill.bill.paid_date ?? '-'}</p>
                         <p><b>ชื่อผู้จ่าย:</b> ${bill.bill.user ?? '-'}</p>
                         <p><b>ยอดชำระ:</b> ${bill.bill.amount} บาท</p>
@@ -268,7 +268,7 @@
                                         .value; // ✅ เพิ่มตรงนี้
 
                                     const approveRes = await fetch(
-                                        "{{ route('admin.water.verify_payment.approveBill') }}", {
+                                        "{{ route('admin.water.verify_payment.receiveBill') }}", {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json',
@@ -317,7 +317,7 @@
                 console.log(bill)
 
                 const htmlContent = `
-                <div style="text-align:left; font-size:16px;">
+                <div style="text-align:left; font-size:16px;  padding:20px;">
                     <p><b>วันที่ชำระ:</b> ${bill.bill.paid_date ?? '-'}</p>
                     <p><b>ชื่อผู้จ่าย:</b> ${bill.bill.user ?? '-'}</p>
                     <p><b>ยอดชำระ:</b> ${bill.bill.amount} บาท</p>
@@ -351,8 +351,8 @@
 
 {{-- Modal: เพิ่มบิลน้ำ --}}
 <div class="modal fade" id="addSlipModal" tabindex="-1" aria-labelledby="addSlipLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content px-4 pt-4">
             <form action="{{ route('admin.water.storeNewBill') }}" method="POST">
                 @csrf
                 <input type="hidden" name="water_location_id" value="{{ $location->id }}">

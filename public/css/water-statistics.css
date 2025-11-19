@@ -9,6 +9,7 @@
     padding: 6px 16px;
     display: inline-block;
     margin-bottom: 6px;
+    transition: all 0.3s ease;
 }
 
 .value-box {
@@ -32,7 +33,7 @@
     padding: 6px 16px;
     color: #007bff;
     /* font-weight: 600; */
-    background-color: #f8f9fa;
+    background-color: white;
     /* พื้นหลังเทาอ่อน */
     font-size: x-large;
     text-decoration: none;
@@ -48,11 +49,15 @@
 }
 
 .add-water:hover {
-    transform: scale(1.1);
+    transform: scale(1.02);
 }
 
 .add-water-no:hover {
     transform: scale(1.02);
+}
+
+.label-box:hover {
+    transform: scale(1.1);
 }
 
 .icon-plus {

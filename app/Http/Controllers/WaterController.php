@@ -190,6 +190,65 @@ class WaterController extends Controller
         }
     }
 
+    public function receiveBill(Request $request)
+    {
+        $request->validate([
+            'bill_id' => 'required|exists:bills,id',
+            'receive_by' => 'nullable|string'
+        ]);
+
+        $bill = Bill::findOrFail($request->bill_id);
+        $bill->status = 'รออนุมัติ';
+        $bill->receive_by = $request->receive_by;
+        $bill->save();
+
+        if (!$bill->water_location_id) {
+            return response()->json(['error' => 'bill ไม่มี water_location_id'], 500);
+        }
+
+        $trashRequest = TrashRequest::where('water_location_id', $bill->water_location_id)->first();
+
+        if ($trashRequest) {
+            $addon = json_decode($trashRequest->addon, true) ?? [];
+            $addon['receive_by'] = $request->receive_by ?? 'ไม่ระบุ';
+
+            $trashRequest->addon = json_encode($addon, JSON_UNESCAPED_UNICODE);
+            $trashRequest->save();
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'บิลถูกอนุมัติและอัปเดตข้อมูล TrashRequest เรียบร้อยแล้ว',
+        ]);
+    }
+
+    public function showApproveList(Request $request)
+    {
+        $search = $request->input('search', '');
+        $perPage = $request->input('data_table_length', 10);
+
+        // query บิลทั้งหมดที่รออนุมัติ
+        $billsQuery = Bill::with('waterLocation.owner')
+            ->where('type', 'water-request')
+            ->where('status', 'รออนุมัติ')
+            ->orderBy('created_at', 'desc');
+
+        if ($search) {
+            // ค้นหาชื่อเจ้าของ
+            $billsQuery->whereHas('waterLocation.owner', function ($q) use ($search) {
+                $q->where('name', 'like', "%$search%");
+            });
+        }
+
+        $bills = ($perPage == -1) 
+            ? $billsQuery->get() 
+            : $billsQuery->paginate($perPage)->appends([
+                'search' => $search,
+                'data_table_length' => $perPage,
+            ]);
+        return view('admin_water.approve-bill', compact('bills', 'search', 'perPage'));
+    }
+
     public function approveBill(Request $request)
     {
         $request->validate([
@@ -221,8 +280,6 @@ class WaterController extends Controller
             'message' => 'บิลถูกอนุมัติและอัปเดตข้อมูล TrashRequest เรียบร้อยแล้ว',
         ]);
     }
-
-
 
     public function storeNewBill(Request $request)
     {
@@ -384,5 +441,22 @@ class WaterController extends Controller
                         ->with('success', 'ลงทะเบียนเสร็จสิ้น');
     }
 
+
+    // API ดึงข้อมูลบิลสำหรับ Modal
+    public function getBillForModal(Request $request)
+    {
+        $bill = Bill::with('waterLocation.owner')->findOrFail($request->bill_id);
+
+        return response()->json([
+            'bill' => [
+                'id' => $bill->id,
+                'user' => $bill->waterLocation->owner->name ?? '-',
+                'amount' => number_format($bill->amount, 2),
+                'paid_date' => $bill->created_at->format('d/m/Y'),
+                'slip_url' => $bill->slip_path ? asset('storage/' . $bill->slip_path) : null,
+                'receive_by' =>$bill->receive_by ?? '-'
+            ]
+        ]);
+    }
 }
 

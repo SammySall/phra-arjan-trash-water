@@ -18,4 +18,9 @@ class TrashLocation extends Model
     {
         return $this->hasMany(Bill::class, 'trash_location_id');
     }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

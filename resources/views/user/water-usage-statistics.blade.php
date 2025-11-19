@@ -14,12 +14,12 @@
                 </div>
             </div>
 
-            <div class="col-md-10 bg-body-secondary payment-bg text-black">
+            <div class="col-md-10 bg-white payment-bg text-black">
                 @foreach ($waterLocations as $location)
-                    <div class="d-flex mb-4 align-items-start flex-wrap water-card">
+                    <div class="d-flex mb-2 align-items-start flex-wrap">
 
                         {{-- รูปภาพด้านซ้าย --}}
-                        <div class="me-3 mb-2" style="flex: 0 0 30%;">
+                        <div class="mt-5 d-flex flex-column justify-content-center" style="flex: 0 0 30%;">
                             <div class="d-flex justify-content-center align-items-end h-100 mb-2">
                                 <img src="../../img/water-statistics/Image.png" alt="banner"
                                     class="trash-toxic-img img-fluid rounded shadow-sm">
@@ -35,7 +35,12 @@
 
                         </div>
 
-                        {{-- การ์ดด้านขวา --}} <div class="border-0 rounded text-center p-3 row flex-grow-1">
+                        {{-- การ์ดด้านขวา --}}
+                        <div class="border-0 rounded text-center p-3 row flex-grow-1" style="flex: 0 0;">
+                            <div class="col-md-12 mb-3">
+                                <img src="../../img/water-statistics/Image-2.png" alt="banner"
+                                    class="img-fluid rounded shadow-sm w-75">
+                            </div>
                             <div class="col-md-6 mb-5">
                                 <div class="label-box">ทะเบียนลูกค้า</div>
                                 <div class="value-box">{{ $location->water_user_no ?? '-' }}</div>
@@ -46,11 +51,7 @@
                                 <p class="label-box">สถานที่ใช้น้ำ</p>
                                 <p class="value-box">{{ $location->address ?? '-' }}</p>
                             </div>
-                            <div class="col-md-6 mb-5">
-                                <p class="label-box">สาขา</p>
-                                <p class="value-box">{{ $location->branch ?? '-' }}</p>
-                            </div>
-                            <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <div class="col-md-12 d-flex justify-content-center align-items-center">
                                 <a href="{{ route('user.water_payment.statistics.detail', ['id' => $location->id]) }}"
                                     class="label-box">
                                     ดูสถิติการใช้น้ำ
@@ -60,9 +61,10 @@
                     </div>
                 @endforeach
                 <div class="row mb-5 text-end">
-                    <div class="col-md-8 d-flex justify-content-center align-items-center">
+                    <div class="col-md-4 d-flex justify-content-center align-items-center">
                     </div>
-                    <a href="/user/water_payment/register_water_no" class="col-md-4 d-flex justify-content-center align-items-center add-water">
+                    <a href="/user/water_payment/register_water_no"
+                        class="col-md-8 d-flex justify-content-center align-items-center add-water">
                         <i class="bi bi-plus icon-plus"></i>เพิ่มทะเบียนลูกค้า
                     </a>
                 </div>

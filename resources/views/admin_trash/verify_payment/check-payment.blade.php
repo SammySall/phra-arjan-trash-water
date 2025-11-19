@@ -202,7 +202,7 @@
                             approveBtn.addEventListener('click', async () => {
                                 try {
                                     const res = await fetch(
-                                        "{{ route('admin.verify_payment.approveBill') }}", {
+                                        "{{ route('admin.verify_payment.receive-bill') }}", {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json',
@@ -415,7 +415,7 @@
                             approveBtn.addEventListener('click', async () => {
                                 try {
                                     const res = await fetch(
-                                        "{{ route('admin.verify_payment.approveBill') }}", {
+                                        "{{ route('admin.verify_payment.receive-bill') }}", {
                                             method: 'POST',
                                             headers: {
                                                 'Content-Type': 'application/json',

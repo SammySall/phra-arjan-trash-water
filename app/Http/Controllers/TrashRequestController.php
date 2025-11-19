@@ -926,12 +926,9 @@ public function confirmPaymentRequestEng($type)
 
     public function showPdfReceiptBill($billId)
     {
-        $bill = Bill::with('trashLocation.trashRequest.files')->findOrFail($billId);
+        $bill = Bill::with('trashLocation.trashRequest')->findOrFail($billId);
 
         $trashRequest = $bill->trashLocation?->trashRequest;
-        if (!$trashRequest) {
-            abort(404, 'ไม่พบคำร้อง');
-        }
 
         $trashLocation = $bill->trashLocation;
 
@@ -950,26 +947,21 @@ public function confirmPaymentRequestEng($type)
         [$baht, $satang] = explode('.', $amount);
 
         $fields = [
-            'field_1'  => $trashRequest->fullname ?? '-',
-            'field_2'  => $trashRequest->prefix ?? null,
+            'field_1'  => $user->name ?? '-',
             'field_3'  => $month ?? '',
             'field_4'  => $baht ?? '',
             'field_15' => $satang ?? null,
-            'field_5'  => $trashRequest->house_no ?? null,
-            'field_6'  => $trashRequest->village_no ?? '',
-            'field_7'  => $trashLocation?->subdistrict ?? '',
-            'field_8'  => $trashLocation?->district ?? '',
+            'field_7'  => $trashLocation?->address ?? '',
+            'field_8'  => $trashLocation?->water_user_no ?? '',
             'field_9'  => $trashLocation?->province ?? '',
-            'field_12' => $trashRequest->place_type ?? '',
-            'field_13' => $trashRequest->alley ?? '',
-            'field_14' => $trashRequest->road ?? '',
             'field_31' => $bill->receive_by ?? null,
+            'status' => $bill->status,
         ];
 
-        $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
+        // $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
 
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.receipt_bill.pdf', compact(
-            'fields','day','month','year','uploadedFiles'
+            'fields','day','month','year'
         ))
         ->setPaper('A4', 'portrait')
         ->stream('ใบเสร็จค่ามูลฝอย.pdf');
@@ -977,17 +969,12 @@ public function confirmPaymentRequestEng($type)
 
     public function showPdfWaterBill($billId)
     {
-        $bill = Bill::with('waterLocation.trashRequest.files', 'user')->findOrFail($billId);
-        $trashRequest = $bill->waterLocation?->trashRequest;
-
-        if (!$trashRequest) {
-            abort(404, 'ไม่พบคำร้อง');
-        }
+        $bill = Bill::with('waterLocation.trashRequest', 'user')->findOrFail($billId);
 
         $waterLocation = $bill->waterLocation;
         $user = $bill->user; // ดึงผู้ใช้เจ้าของบิล
         // วัน เดือน ปี ภาษาไทย
-        $date = \Carbon\Carbon::parse($trashRequest->created_at ?? now());
+        $date = \Carbon\Carbon::parse($bill->created_at ?? now());
         $day = (int) $date->format('d');
         $thaiMonths = [
             1 => 'มกราคม', 2 => 'กุมภาพันธ์', 3 => 'มีนาคม', 4 => 'เมษายน',
@@ -996,7 +983,6 @@ public function confirmPaymentRequestEng($type)
         ];
         $month = $thaiMonths[(int)$date->format('m')];
         $year = $date->format('Y') + 543;
-        $addon = json_decode($trashRequest->addon, true);
 
         $amount = number_format($bill->amount ?? 0, 2, '.', '');
         [$baht, $satang] = explode('.', $amount);
@@ -1012,14 +998,12 @@ public function confirmPaymentRequestEng($type)
             'field_8'  => $waterLocation?->water_user_no ?? '',
             'field_9'  => $waterLocation?->province ?? '',
             'field_12' => $bill->receive_by ?? null,
-            'field_13' => $trashRequest->alley ?? '',
-            'field_14' => $trashRequest->road ?? '',
+            'status' => $bill->status,
         ];
         // dd($bill->receive_by);
-        $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
 
         return \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.pay_slip.pdf', compact(
-            'fields','day','month','year','uploadedFiles'
+            'fields','day','month','year'
         ))
         ->setPaper('A4', 'portrait')
         ->stream('ใบเสร็จค่าน้ำประปา.pdf');

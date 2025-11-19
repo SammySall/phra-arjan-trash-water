@@ -16,6 +16,7 @@
 
     @php
         $path = request()->path();
+        $tokenData = json_decode(\Illuminate\Support\Facades\Crypt::decryptString(session('token')), true);
     @endphp
 
     <!-- Sidebar -->
@@ -63,12 +64,23 @@
             </li>
 
             <li>
-                <a href="/admin/trash_bank"
-                    class="nav-link {{ Str::contains($path, 'trash_bank') ? 'active' : '' }}">
-                    <img src="{{ url('../img/trash-system/Waste-Bank-Icon.png') }}" alt="icon-2" class="img-fluid logo-img" width="32px">
+                <a href="/admin/trash_bank" class="nav-link {{ Str::contains($path, 'trash_bank') ? 'active' : '' }}">
+                    <img src="{{ url('../img/trash-system/Waste-Bank-Icon.png') }}" alt="icon-2"
+                        class="img-fluid logo-img" width="32px">
                     ธนาคารขยะ
                 </a>
             </li>
+
+            @if (isset($tokenData['role']) && $tokenData['role'] === 'admin-trash-head')
+                <li>
+                    <a href="/admin/waterworks/approve-bill"
+                        class="nav-link {{ Str::contains($path, 'approve-bill') ? 'active' : '' }}">
+                        <img src="{{ url('../../img/admin-water/Icon-6.png') }}" alt="icon-3"
+                            class="img-fluid logo-img" style="width: 20px;">
+                        อนุมัติใบเสร็จ
+                    </a>
+                </li>
+            @endif
 
             <div class="mt-3 fw-bold">
                 <h4>รายงาน <img src="{{ url('../img/trash-system/Report-icon.png') }}" alt="Manage-icon"
@@ -117,12 +129,6 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     @if (session('token'))
-                        @php
-                            $tokenData = json_decode(
-                                \Illuminate\Support\Facades\Crypt::decryptString(session('token')),
-                                true,
-                            );
-                        @endphp
                         <li class="dropdown-item-text d-flex align-items-end gap-2">
                             <i class="bi bi-person-circle"></i>
                             <span>{{ $tokenData['name'] }}</span>
@@ -158,7 +164,7 @@
         <div class="container-fluid content-trash-bg desktop-only">
             <div class="row">
                 <div class="col-12 p-5">
-                        @yield('desktop-content')
+                    @yield('desktop-content')
                 </div>
             </div>
         </div>
