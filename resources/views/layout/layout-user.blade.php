@@ -16,7 +16,7 @@
 
 <body class="d-flex flex-column min-vh-100">
     {{-- header --}}
-    <header class="header-bg {{ Request::is('user/waste_payment*')||Request::is('user/request/trash_request*') ? 'waste-header' : 'water-header' }} pt-2 pb-4">
+    <header class="header-bg {{ Request::is('user/waste_payment*')||Request::is('user/request/trash_request*')||Request::is('user/request/history_request*') ? 'waste-header' : 'water-header' }} pt-2 pb-4">
         <div class="container d-flex flex-column flex-lg-row justify-content-between align-items-center">
             <div class="d-flex justify-content-center align-items-center text-decoration-none gap-2">
                 {{-- รูปโลโก้ --}}
@@ -97,7 +97,7 @@
     </main>
 
     {{-- footer --}}
-    <footer class="footer-bg {{ Request::is('user/waste_payment*')||Request::is('user/request/trash_request*') ? 'waste-footer' : 'water-footer' }} pt-2 pb-4">
+    <footer class="footer-bg {{ Request::is('user/waste_payment*')||Request::is('user/request/trash_request*')||Request::is('user/request/history_request*') ? 'waste-footer' : 'water-footer' }} pt-2 pb-4">
         <div class="container d-flex flex-column justify-content-center align-items-center">
             <div class="title-footer">องค์กรบริหารส่วนตำบลพระอาจารย์</div>
             <div class="d-flex flex-column-reverse flex-md-row justify-content-center align-items-center gap-3 pt-2">

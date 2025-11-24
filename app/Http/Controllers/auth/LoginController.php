@@ -86,7 +86,7 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         // ตรวจสอบ path ก่อน logout แล้ว redirect ไปยัง path ที่เหมาะสม
-        if (preg_match('/user\/water/', $previousUrl)) {
+        if (preg_match('/\/water/', $previousUrl)) {
             return redirect('/user/waterworks');
         } else {
             return redirect('/user/waste_payment');

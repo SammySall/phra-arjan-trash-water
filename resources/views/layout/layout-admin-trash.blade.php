@@ -73,8 +73,8 @@
 
             @if (isset($tokenData['role']) && $tokenData['role'] === 'admin-trash-head')
                 <li>
-                    <a href="/admin/waterworks/approve-bill"
-                        class="nav-link {{ Str::contains($path, 'approve-bill') ? 'active' : '' }}">
+                    <a href="/admin/approve_bill"
+                        class="nav-link {{ Str::contains($path, 'approve_bill') ? 'active' : '' }}">
                         <img src="{{ url('../../img/admin-water/Icon-6.png') }}" alt="icon-3"
                             class="img-fluid logo-img" style="width: 20px;">
                         อนุมัติใบเสร็จ
