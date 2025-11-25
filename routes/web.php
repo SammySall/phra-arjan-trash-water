@@ -39,7 +39,7 @@ Route::get('/user/request/general', function () {
     return view('user.form_request.general');
 });
 
-Route::get('/user/request/trash_request', function () {
+Route::middleware('auth')->get('/user/request/trash_request', function () {
     return view('user.form_request.trash-request');
 });
 
