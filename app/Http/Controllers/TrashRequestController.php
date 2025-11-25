@@ -210,6 +210,8 @@ class TrashRequestController extends Controller
             $trashRequest->received_at = now();
             $trashRequest->save();
 
+            $addon = json_decode($trashRequest->addon, true) ?? [];
+
             // สร้าง trash_location
             $location = new \App\Models\TrashLocation();
             $location->name = $trashRequest->fullname;
@@ -217,6 +219,7 @@ class TrashRequestController extends Controller
             $location->status = 'รออนุมัติเรียกชำระเงิน';
             $location->tel = $trashRequest->tel ?? null;
             $location->user_id = $trashRequest->creator_id;
+            $location->create_bill_for = $addon['for'] ?? "รายเดือน";
             $location->save();
 
             $trashRequest->trash_location_id = $location->id;
@@ -460,6 +463,7 @@ class TrashRequestController extends Controller
 
             'field_00' => $trashRequest->id ?? '-',
             'field_option' => $addon["option"] ?? '-',
+            'for'=>$addon['for']??'-',
         ];
 
         // ✅ ดึงชื่อ field_name ของไฟล์ทั้งหมด

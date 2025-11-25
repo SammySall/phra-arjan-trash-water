@@ -122,7 +122,7 @@
                                         </button>
                                     @elseif ($bill->status === 'ชำระแล้ว' || $bill->status === 'รออนุมัติ')
                                         <button type="button" class="btn btn-sm">
-                                            <a href="{{ route('admin.bill.pdf', $bill->trash_location_id) }}"
+                                            <a href="{{ route('admin.bill.pdf', $bill->id) }}"
                                                 target="_blank" class="btn btn-danger btn-sm">
                                                 <i class="bi bi-filetype-pdf"></i>
                                             </a>

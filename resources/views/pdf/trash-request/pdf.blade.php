@@ -73,7 +73,7 @@
     <div class="title_doc">คำร้องขออนุญาตลงถังขยะ</div>
 
     <div class="box_text" style="text-align: right;">
-        <span>เขียนที่เทศบาลตำบลท่าข้าม <br>112 หมู่ 3 ตำบลท่าข้าม <br>อำเภอบางปะกง จังหวัดฉะเชิงเทรา</span>
+        <span>เขียนที่เทศบาลตำบลพระอาจารย์ <br> ม.5 ถ.คลองหกวา ต.พระอาจารย์ <br>อ.องค์รักษ์ จ.นครนายก</span>
         <div style="margin-top: 10px;">
             <span>วันที่</span>
             <span class="dotted-line" style="width: 5%; text-align: center;">{{ $day ?: '-' }}</span>
@@ -118,7 +118,10 @@
 
     <div class="box_text" style="text-align: left; margin-left:5rem;margin-top:10px;">
         <span>มีความประสงค์</span>
-        <span class="dotted-line" style="min-width: 50%; margin-left: 10px;">{{ $fields['field_12'] ?? '-' }}</span>
+        @php
+            $option = ['บ้านที่อยู่อาศัย','บ้านเช่า/อาคารให้เช่า','ร้านค้า','โรงงาน/ประกอบธุรกิจ','อื่นๆ']
+        @endphp
+        <span class="dotted-line" style="min-width: 50%; margin-left: 10px;">ขออนุญาตลงถังขยะประเภท {{ $option[$fields['field_option']] ?? '-' }} โดยจ่ายแบบ {{ $fields['for'] ?? '-' }}</span>
     </div>
 
     <div class="box_text" style="text-align: left;">

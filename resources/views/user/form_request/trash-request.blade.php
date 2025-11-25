@@ -121,6 +121,27 @@
                 </div>
             </div>
 
+            <div class="mb-3 mt-3">
+                <div class="col-md-12">
+                    <label class="form-label">
+                        โปรด/ ลงใน ( ) หน้าข้อความที่ตรงกับรอบจ่ายค่าขยะมูลฝอยของท่าน <span
+                            class="text-danger">*</span>
+                    </label>
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="radio" name="addon[for]" id="for"
+                                value="รายปี">
+                            <label class="form-check-label" for="for">รายปี</label>
+                        </div>
+                        <div class="form-check me-3">
+                            <input class="form-check-input" type="radio" name="addon[for]" id="for1"
+                                value="รายเดือน">
+                            <label class="form-check-label" for="for1">รายเดือน</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {{-- 🗺️ แผนที่ --}}
             <div class="mb-3">
                 <label class="form-label">ตำแหน่งสถานที่จัดเก็บขยะมูลฝอย <span class="text-danger">*</span></label>
