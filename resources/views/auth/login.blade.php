@@ -26,6 +26,17 @@
                         <h1>เข้าสู่ระบบ</h1>
                     </div>
 
+                    {{-- ✅ กล่องแสดง error ด้านบน --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger text-start">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -34,8 +45,12 @@
                             <div class="input-group">
                                 <label for="username" class="input-group-text"><i class="bi bi-person"></i></label>
                                 <input type="text" name="username" id="username" class="form-control"
-                                    placeholder="อีเมล" required>
+                                    placeholder="ชื่อผู้ใช้" value="{{ old('username') }}" required>
                             </div>
+                            {{-- ❗ แสดง error ใต้ช่อง --}}
+                            @error('username')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         {{-- รหัสผ่าน --}}
@@ -48,6 +63,10 @@
                                     <i class="bi bi-eye"></i>
                                 </button>
                             </div>
+                            {{-- ❗ แสดง error ใต้ช่อง --}}
+                            @error('password')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         {{-- สมัครสมาชิก --}}
@@ -68,7 +87,8 @@
 
             {{-- ✅ ขวา: พื้นหลังหรือรูปภาพ --}}
             <div class="col-md-6 d-none d-md-flex justify-content-end align-items-center pe-0">
-                <img src="{{ asset('img/Login/Image (ชิดขวา).png') }}" alt="เข้าสู่ระบบ" class="img-fluid img-login-banner">
+                <img src="{{ asset('img/Login/Image (ชิดขวา).png') }}" alt="เข้าสู่ระบบ"
+                    class="img-fluid img-login-banner">
             </div>
 
         </div>

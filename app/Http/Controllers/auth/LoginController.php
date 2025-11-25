@@ -26,7 +26,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'username' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
 
@@ -61,12 +61,19 @@ class LoginController extends Controller
             } elseif (str_contains($user->role, 'admin-water')) {
                 return redirect('/admin/waterworks/showdata');
             } elseif ($user->role === 'user') {
-                if (preg_match('/user\/(waste|trash)/', $previousUrl)) {
-                    return redirect('/user/waste_payment');
-                } elseif (preg_match('/user\/water/', $previousUrl)) {
-                    return redirect('/user/waterworks');
+
+                // 🔥 ถ้ามาจาก register → ใช้ URL ก่อน register แทน
+                if (str_contains($previousUrl, '/register')) {
+                    $previousUrl = Session::pull('before_register', '/user/waterworks');
                 }
+                // 🔥 ส่งกลับไปยังหน้าที่อยู่จริงก่อนสมัคร
+                if ($previousUrl && $previousUrl !== url('/login')) {
+                    return redirect($previousUrl);
+                }
+                // fallback
+                return redirect('/user/waterworks');
             }
+
 
 
             // fallback

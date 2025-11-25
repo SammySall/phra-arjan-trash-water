@@ -19,7 +19,6 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:9|confirmed',
             'salutation' => 'required',
             'name' => 'required|string|max:255',
@@ -30,17 +29,24 @@ class RegisterController extends Controller
             'district' => 'required|string',
             'subdistrict' => 'required|string',
         ], [
-            'email.unique' => 'อีเมลนี้มีผู้ใช้งานแล้ว',
             'password.confirmed' => 'รหัสผ่านไม่ตรงกัน',
         ]);
 
-        // รวมที่อยู่ทั้งหมดให้เป็นข้อความเดียว
+        // รวมที่อยู่
         $fullAddress = "{$validated['address']} ต.{$validated['subdistrict']} อ.{$validated['district']} จ.{$validated['province']}";
 
-        // ✅ บันทึกข้อมูล
+        // ใช้ email หรือ phone เป็น email
+        $loginEmail = $request->email ? $request->email : $request->tel;
+
+        // ตรวจสอบซ้ำ
+        if (User::where('email', $loginEmail)->exists()) {
+            return back()->withErrors(['email' => 'อีเมล/เบอร์นี้มีผู้ใช้งานแล้ว'])->withInput();
+        }
+
+        // บันทึก
         User::create([
             'name' => "{$validated['salutation']} {$validated['name']}",
-            'email' => $validated['email'],
+            'email' => $loginEmail,
             'password' => Hash::make($validated['password']),
             'address' => $fullAddress,
             'role' => 'user',
@@ -48,4 +54,5 @@ class RegisterController extends Controller
 
         return redirect('/login')->with('success', 'สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ');
     }
+
 }
