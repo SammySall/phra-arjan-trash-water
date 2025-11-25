@@ -283,7 +283,7 @@
                             <div>
                                 <span style="font-size: 18px; font-weight: bold;">
                                     ใบแจ้งหนี้<br>
-                                    (ไม่ใช่ใยเสร็จรับเงิน)
+                                    (ไม่ใช่ใบเสร็จรับเงิน)
                                 </span>
                             </div>
                         </td>

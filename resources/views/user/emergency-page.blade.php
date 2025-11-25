@@ -25,10 +25,10 @@
                         {{ empty($type) ? '-- โปรดเลือกเหตุผล --' : '' }}
                     </option>
                     <option value="water-leak" {{ ($type ?? '') == 'water-leak' ? 'selected' : '' }}>น้ำรั่ว</option>
-                    {{-- <option value="fire" {{ ($type ?? '') == 'fire' ? 'selected' : '' }}>ไฟไหม้</option>
+                    <option value="fire" {{ ($type ?? '') == 'fire' ? 'selected' : '' }}>ไฟไหม้</option>
                     <option value="tree-fall" {{ ($type ?? '') == 'tree-fall' ? 'selected' : '' }}>ต้นไม้ล้ม</option>
                     <option value="broken-road" {{ ($type ?? '') == 'broken-road' ? 'selected' : '' }}>ถนนเสีย</option>
-                    <option value="elec-broken" {{ ($type ?? '') == 'elec-broken' ? 'selected' : '' }}>ไฟเสีย</option> --}}
+                    <option value="elec-broken" {{ ($type ?? '') == 'elec-broken' ? 'selected' : '' }}>ไฟเสีย</option>
                 </select>
             </div>
 

@@ -240,7 +240,7 @@
                 confirmButtonText: 'OK',
                 confirmButtonColor: '#3085d6'
             }).then(() => {
-                window.location.href = "{{ url('/') }}"; // กลับหน้า homepage
+                window.location.href = "{{ url('/user/waste_payment') }}"; // กลับหน้า homepage
             });
         </script>
     @endif

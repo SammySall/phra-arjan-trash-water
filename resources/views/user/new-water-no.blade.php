@@ -46,11 +46,11 @@
 
                         {{-- แถว 2 --}}
                         <div class="row mb-3">
-                            <div class="col-md-6 text-center">
+                            {{-- <div class="col-md-6 text-center">
                                 <label class="label-box">สาขาที่ใช้น้ำ</label>
                                 <input type="text" name="addon[branch]" class="form-control" required>
-                            </div>
-                            <div class="col-md-6 text-center">
+                            </div> --}}
+                            <div class="col-md-12 text-center">
                                 <label class="label-box">ที่อยู่</label>
                                 <input type="text" name="addon[address]" class="form-control"
                                     placeholder="เช่น บ้านเลขที่ หมู่บ้าน ตำบล อำเภอ จังหวัด" required>
