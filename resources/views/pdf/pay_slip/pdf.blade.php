@@ -184,16 +184,16 @@
                                 </td>
                                 <td
                                     style="border:1px solid #000; padding:5px; vertical-align: center; text-align:right;">
-                                    <span class="dotted-line" style="width: 100%; text-align: left;">
-                                        {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span>
+                                    {{-- <span class="dotted-line" style="width: 100%; text-align: left;">
+                                        {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span> --}}
                                 </td>
                             </tr>
                             <tr>
                                 <!-- คอลัมน์ซ้าย -->
                                 <td colspan="2" style="text-align:right;">
                                     <span><strong><u>คูณ</u></strong> อัตราค่าน้ำหน่วยละ</span>
-                                    <span class="dotted-line" style="width: 5%; text-align: center;">
-                                        {{ $fields['field_99'] ?? '-' }}
+                                    <span class="dotted-line" style="width: 10%; text-align: center;">
+                                        {{ $fields['field_10'] ?? '-' }}
                                     </span>
                                     <span>บาท เป็นจำนวนเงินค่าน้ำ</span>
                                     <br>
@@ -204,7 +204,7 @@
                                 <!-- คอลัมน์ขวา -->
                                 <td style="border:1px solid #000; padding:5px; text-align:left;">
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
-                                        {{ $fields['field_99'] ?? '-' }}</span><br>
+                                        {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span><br>
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
                                         {{ $fields['field_99'] ?? '-' }}</span><br>
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
@@ -249,7 +249,7 @@
                                 <span>(ลงนาม)</span>
                                 <span class="dotted-line"
                                     style="width: 80%; display: inline-block; text-align: center;">
-                                    @if ($fields['field_12'] !== null && ($fields['status'] === 'ชำระแล้ว'))
+                                    @if ($fields['field_12'] !== null && $fields['status'] === 'ชำระแล้ว')
                                         <img src="{{ public_path('img/signature/1.jpg') }}" alt="signature2"
                                             style="width:50%; ">
                                     @endif
@@ -317,8 +317,8 @@
                 </h3>
                 <div class="box_text" style="text-align: left;">
                     <span style="margin-left:1rem; font-size:16px; font-weight: bold; text-align: justify;">
-                        ให้กับองค์การบริหารส่วนตำบลพระอาจารย์ 
-                        ฉะนั้นให้นำเงินตำนวนดังกล่าวชำระต่อ 
+                        ให้กับองค์การบริหารส่วนตำบลพระอาจารย์
+                        ฉะนั้นให้นำเงินตำนวนดังกล่าวชำระต่อ
                         กองคลังองค์การบริหารส่วนตำบลพระอาจารย์
                         ภายใน 7 วัน นับถัดจากวันที่ได้รับใบแจ้งนี้
                         หากพ้นกำหนดการประปา องค์การบริหาร

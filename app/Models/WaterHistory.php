@@ -17,6 +17,7 @@ class WaterHistory extends Model
         'update_miter',
         'updateAt',
         'updateBy',
+        'unit_price',
     ];
 
     // ความสัมพันธ์กับ water_location

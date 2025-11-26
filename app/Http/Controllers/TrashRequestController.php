@@ -952,14 +952,15 @@ public function confirmPaymentRequestEng($type)
 
         $fields = [
             'field_1'  => $user->name ?? '-',
-            'field_3'  => $month ?? '',
-            'field_4'  => $baht ?? '',
+            'field_3'  => $trashLocation->create_bill_for=="รายปี" ? $year : $month ,
+            'field_4'  => $trashLocation->create_bill_for=="รายปี" ? $baht * 12 : $baht ,
             'field_15' => $satang ?? null,
             'field_7'  => $trashLocation?->address ?? '',
             'field_8'  => $trashLocation?->water_user_no ?? '',
             'field_9'  => $trashLocation?->province ?? '',
             'field_31' => $bill->receive_by ?? null,
             'status' => $bill->status,
+            'create_bill_for'=>$trashLocation->create_bill_for??'',
         ];
 
         // $uploadedFiles = $trashRequest->files->pluck('field_name')->toArray();
@@ -1002,6 +1003,7 @@ public function confirmPaymentRequestEng($type)
             'field_8'  => $waterLocation?->water_user_no ?? '',
             'field_9'  => $waterLocation?->province ?? '',
             'field_12' => $bill->receive_by ?? null,
+            'field_10' => $bill->unit_price ?? null,
             'status' => $bill->status,
         ];
         // dd($bill->receive_by);

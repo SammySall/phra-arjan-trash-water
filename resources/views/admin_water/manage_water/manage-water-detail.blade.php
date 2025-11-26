@@ -10,11 +10,11 @@
             <div>
                 <div><strong>เจ้าของทะเบียน :</strong> {{ $location->owner->name ?? '-' }}</div>
                 <div><strong>ที่อยู่ :</strong> {{ $location->address ?? '-' }}</div>
-                <div><strong>สาขาที่ใช้น้ำ :</strong> {{ $location->branch ?? '-' }}</div>
+                {{-- <div><strong>สาขาที่ใช้น้ำ :</strong> {{ $location->branch ?? '-' }}</div> --}}
             </div>
 
             <div>
-                <button class="btn" data-bs-toggle="modal" data-bs-target="#addSlipModal">
+                <button class="btn" style="text-align: right;" data-bs-toggle="modal" data-bs-target="#addSlipModal">
                     <img src="{{ url('../img/water-menu-page/Add-Button.png') }}" alt="Coin" class="w-75">
                 </button>
             </div>
@@ -79,6 +79,19 @@
                                     class="btn btn-danger btn-sm text-white">
                                     <i class="bi bi-filetype-pdf"></i>
                                 </a>
+                                {{-- ถ้า old_miter = 0 และ role ไม่ใช่ meter-filler --}}
+                                @php
+                                    $userRole = auth()->user()->role ?? '';
+                                @endphp
+                                @if (($histories[$index]->old_miter ?? 0) == 0 && $userRole !== 'meter-filler')
+                                    <button class="btn btn-warning btn-sm edit-miter-btn"
+                                        data-history-id="{{ $histories[$index]->id }}"
+                                        data-old-miter="{{ $histories[$index]->old_miter }}"
+                                        data-update-miter="{{ $histories[$index]->update_miter }}"
+                                        data-bill-id="{{ $bill->id }}">
+                                        แก้ไขมิเตอร์เดิม
+                                    </button>
+                                @endif
                                 @if ($bill->status == 'รอการตรวจสอบ')
                                     <button class="btn btn-primary btn-sm pay-btn"
                                         data-amount="{{ number_format($bill->amount, 2) }}" data-id="{{ $bill->id }}">
@@ -118,18 +131,19 @@
 
     <div class="container bg-white bg-opacity-75 p-4 rounded-3 shadow-sm">
 
-        <div class="mb-3"><strong>ที่อยู่ :</strong> {{ $location->address ?? '-' }}</div>
-        <div class="mb-3"><strong>สาขาที่ใช้น้ำ :</strong> {{ $location->branch ?? '-' }}</div>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <div><strong>เจ้าของทะเบียน :</strong> {{ $location->owner->name ?? '-' }}</div>
+                <div><strong>ที่อยู่ :</strong> {{ $location->address ?? '-' }}</div>
+                {{-- <div><strong>สาขาที่ใช้น้ำ :</strong> {{ $location->branch ?? '-' }}</div> --}}
+            </div>
 
-        <div class="mb-3">
-            <strong>สถานะ :</strong>
-            @if ($location->status == 'เสร็จสิ้น')
-                <span class="badge bg-success">ติดตั้งถังขยะแล้ว</span>
-            @else
-                <span class="badge bg-warning">รอติดตั้ง</span>
-            @endif
         </div>
-
+        <div>
+            <button class="btn" data-bs-toggle="modal" data-bs-target="#addSlipModal">
+                <img src="{{ url('../img/water-menu-page/Add-Button.png') }}" alt="Coin" class="w-75">
+            </button>
+        </div>
         {{-- ตัวกรอง pagination + search --}}
         <div id="data_table_wrapper" class="mb-3 d-flex flex-column gap-2">
             <form method="GET" class="d-flex align-items-center">
@@ -174,22 +188,35 @@
                     @forelse($bills as $index => $bill)
                         <tr>
                             <td>{{ $loop->iteration + (($bills->currentPage() - 1) * $bills->perPage() ?? 0) }}</td>
-                            <td>{{ $loop->first ? $location->old_miter ?? '-' : $histories[$index - 1]->old_miter ?? '-' }}
+                            <td>{{ $histories[$index]->old_miter ?? '-' }}
                             </td>
-                            <td>{{ $loop->first ? $location->new_miter ?? '-' : $histories[$index - 1]->update_miter ?? '-' }}
+                            <td>{{ $histories[$index]->update_miter ?? '-' }}
                             </td>
                             <td>{{ number_format($bill->amount, 2) }} บาท</td>
                             <td>{{ \Carbon\Carbon::parse($bill->created_at)->format('d/m/Y') }}</td>
                             <td>
-                                @if ($bill->status == 'unpaid')
-                                    <img src="{{ url('../img/icon/ยังไม่ชำระ.png') }}" class="img-fluid logo-img"
-                                        alt="ยังไม่ชำระ">
+                                <img src="{{ url('../img/icon/' . $bill->status . '.png') }}" alt="{{ $bill->status }}"
+                                    class="img-fluid logo-img" style="width: 32px">
+                            </td>
+                            <td>
+                                <a href="{{ route('admin.water_bill.pdf', $bill->id) }}" target="_blank"
+                                    class="btn btn-danger btn-sm text-white">
+                                    <i class="bi bi-filetype-pdf"></i>
+                                </a>
+                                @if ($bill->status == 'รอการตรวจสอบ')
+                                    <button class="btn btn-primary btn-sm pay-btn"
+                                        data-amount="{{ number_format($bill->amount, 2) }}"
+                                        data-id="{{ $bill->id }}">
+                                        ตรวจสอบการชำระเงิน </button>
+                                @elseif ($bill->status == 'ชำระแล้ว')
+                                    <button type="button" data-id="{{ $bill->id }}"
+                                        class="btn-manage p-0 border-0 bg-transparent"> <img
+                                            src="{{ url('../img/trash_verify/4.png') }}" class="img-fluid logo-img"
+                                            alt="Manage"> </button>
                                 @else
-                                    <img src="{{ url('../img/icon/เสร็จสิ้น.png') }}" class="img-fluid logo-img"
-                                        alt="เสร็จสิ้น">
+                                    <span class="text-muted"></span>
                                 @endif
                             </td>
-                            <td></td>
                         </tr>
                     @empty
                         <tr>
@@ -281,12 +308,12 @@
                                         });
 
                                     const data = await approveRes
-                                .json();
+                                        .json();
                                     if (approveRes.ok && data.success) {
                                         Swal.fire('สำเร็จ', data
                                                 .message, 'success')
                                             .then(() => location
-                                            .reload());
+                                                .reload());
                                     } else {
                                         Swal.fire('ผิดพลาด', data
                                             .message ||
@@ -370,6 +397,11 @@
                 </div>
 
                 <div class="mb-3">
+                    <label for="unit_price" class="form-label">ราคาต่อหน่วย</label>
+                    <input type="number" class="form-control" id="unit_price" name="unit_price" required>
+                </div>
+
+                <div class="mb-3">
                     <label for="amount" class="form-label">จำนวนเงิน (คำนวณอัตโนมัติ)</label>
                     <input type="text" class="form-control" id="amount" name="amount" readonly>
                 </div>
@@ -384,20 +416,58 @@
     </div>
 </div>
 
+{{-- มิเตอร์แก้ไข --}}
+<div class="modal fade" id="editMiterModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content p-3">
+            <h5>แก้ไขมิเตอร์เดิม</h5>
+
+            <form id="editMiterForm">
+                @csrf
+
+                <input type="hidden" id="edit_history_id">
+                <input type="hidden" id="edit_bill_id">
+
+                <div class="mb-3">
+                    <label class="form-label">มิเตอร์เดิม</label>
+                    <input type="number" id="edit_old_miter" class="form-control">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">มิเตอร์ล่าสุด</label>
+                    <input type="number" id="edit_update_miter" class="form-control" readonly>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">บันทึก</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
 <script>
-    // คำนวณจำนวนเงินอัตโนมัติ
-    document.getElementById('new_miter').addEventListener('input', function() {
+    document.getElementById('new_miter').addEventListener('input', calculateAmount);
+    document.getElementById('unit_price').addEventListener('input', calculateAmount);
+
+    function calculateAmount() {
+
         const oldMiter = parseFloat(document.getElementById('old_miter').value) || 0;
-        const newMiter = parseFloat(this.value) || 0;
+        const newMiter = parseFloat(document.getElementById('new_miter').value) || 0;
+        const unitPrice = parseFloat(document.getElementById('unit_price').value) || 0;
 
         let usage = newMiter - oldMiter;
         if (usage < 0) usage = 0;
 
-        const pricePerUnit = 10; // ราคาต่อหน่วย
-        document.getElementById('amount').value = (usage * pricePerUnit).toFixed(2);
-        document.getElementById('price_per_unit').value = pricePerUnit;
-    });
+        const total = usage * unitPrice;
+
+        document.getElementById('amount').value = total.toFixed(2);
+
+        // ส่งค่าไปเก็บใน hidden input ถ้าต้องการ
+        document.getElementById('price_per_unit').value = unitPrice;
+    }
 </script>
+
 {{-- Script คำนวณ --}}
 <script>
     function calcTotals() {
@@ -414,5 +484,103 @@
 
     document.querySelectorAll('.receipt-input, .expense-input').forEach(input => {
         input.addEventListener('input', calcTotals);
+    });
+</script>
+
+<script>
+    // ดักไม่ให้ส่งฟอร์มถ้ามิเตอร์ใหม่ < มิเตอร์เก่า
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('#addSlipModal form');
+
+        form.addEventListener('submit', function(e) {
+
+            const oldMiter = parseFloat(document.getElementById('old_miter').value) || 0;
+            const newMiter = parseFloat(document.getElementById('new_miter').value) || 0;
+
+            if (newMiter <= oldMiter) {
+                e.preventDefault(); // ❌ หยุดการ submit
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ค่ามิเตอร์ไม่ถูกต้อง',
+                    text: 'มิเตอร์ล่าสุดต้องไม่น้อยกว่ามิเตอร์เดิม',
+                });
+
+                return false;
+            }
+        });
+    });
+</script>
+
+{{-- สำหรับเปิดmodelแก้ไข --}}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        document.querySelectorAll('.edit-miter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                document.getElementById('edit_history_id').value = btn.dataset.historyId;
+                document.getElementById('edit_bill_id').value = btn.dataset.billId;
+                document.getElementById('edit_old_miter').value = btn.dataset.oldMiter;
+                document.getElementById('edit_update_miter').value = btn.dataset.updateMiter;
+
+                // รองรับ Bootstrap 4 + 5
+                if (typeof bootstrap !== 'undefined') {
+                    new bootstrap.Modal(document.getElementById('editMiterModal')).show();
+                } else {
+                    $('#editMiterModal').modal('show');
+                }
+
+            });
+        });
+
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        document.getElementById('editMiterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            let formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('history_id', document.getElementById('edit_history_id').value);
+            formData.append('bill_id', document.getElementById('edit_bill_id').value);
+            formData.append('old_miter', document.getElementById('edit_old_miter').value);
+
+            try {
+                const res = await fetch("{{ route('admin.water.updateOldMiter') }}", {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'สำเร็จ',
+                        text: data.message
+                    }).then(() => {
+                        location.reload();
+                    });
+
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'ผิดพลาด',
+                        text: data.message || 'เกิดข้อผิดพลาด'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'ผิดพลาด',
+                    text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้'
+                });
+            }
+        });
+
     });
 </script>

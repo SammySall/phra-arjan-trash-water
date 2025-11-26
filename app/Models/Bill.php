@@ -19,6 +19,7 @@ class Bill extends Model
         'due_date',
         'paid_date',
         'slip_path',
+        'unit_price',
     ];
 
     // ✅ ความสัมพันธ์กับผู้ใช้

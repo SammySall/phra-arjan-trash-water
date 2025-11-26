@@ -60,7 +60,9 @@ class LoginController extends Controller
                 return redirect('/admin/waste_payment');
             } elseif (str_contains($user->role, 'admin-water')) {
                 return redirect('/admin/waterworks/showdata');
-            } elseif ($user->role === 'user') {
+            } elseif(str_contains($user->role, 'meter-filler')){
+                return redirect('/admin/waterworks/manage-water');
+            }elseif ($user->role === 'user') {
 
                 // 🔥 ถ้ามาจาก register → ใช้ URL ก่อน register แทน
                 if (str_contains($previousUrl, '/register')) {

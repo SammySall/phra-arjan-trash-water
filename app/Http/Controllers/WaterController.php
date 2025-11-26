@@ -286,7 +286,7 @@ class WaterController extends Controller
         $request->validate([
             'water_location_id' => 'required|exists:water_locations,id',
             'new_miter' => 'required|numeric|min:0',
-            'price_per_unit' => 'required|numeric|min:0',
+            'unit_price' => 'required|numeric|min:0',
         ]);
 
         $user = auth()->user(); // ผู้สร้างบิล
@@ -295,16 +295,18 @@ class WaterController extends Controller
         // คำนวณปริมาณการใช้น้ำ
         $oldMiter = $location->new_miter ?? 0; // ค่าเก่าล่าสุด
         $newMiter = $request->new_miter;
+        $unitPrice = $request->unit_price ?? 7;
         $usage = $newMiter - $oldMiter;
         if ($usage < 0) $usage = 0;
 
-        $amount = $usage * $request->price_per_unit;
+        $amount = $usage * $unitPrice;
 
         // สร้างบิลใหม่
         $bill = Bill::create([
             'user_id' => $location->owner_id,
             'water_location_id' => $location->id,
             'amount' => $amount,
+            'unit_price'=>$unitPrice,
             'status' => 'ยังไม่ชำระ',
             'type' => 'water-request',
             'due_date' => Carbon::now()->addDays(15), // กำหนดวันครบกำหนด 15 วันหลังสร้าง
@@ -319,6 +321,7 @@ class WaterController extends Controller
         WaterHistory::create([
             'water_location_id' => $location->id,
             'old_miter' => $oldMiter,
+            'unit_price' =>$location->unit_price,
             'update_miter' => $newMiter,
             'updateAt' => Carbon::now(),
             'updateBy' => $user->id,
@@ -458,5 +461,36 @@ class WaterController extends Controller
             ]
         ]);
     }
+
+    public function updateOldMiter(Request $request)
+    {
+        $request->validate([
+            'history_id' => 'required|exists:water_histories,id',
+            'bill_id' => 'required|exists:bills,id',
+            'old_miter' => 'required|numeric|min:0',
+        ]);
+
+        $history = WaterHistory::findOrFail($request->history_id);
+        $bill = Bill::findOrFail($request->bill_id);
+        // ค่าใหม่
+        $newOld = $request->old_miter;
+        $usage = $history->update_miter - $newOld;
+        if($usage < 0) $usage = 0;
+
+        // อัปเดตประวัติ
+        $history->old_miter = $newOld;
+        $history->save();
+
+        // อัปเดตจำนวนเงินในบิล
+        $unit_price = $bill->unit_price ?? 7;
+        $bill->amount = $usage * $unit_price;
+        $bill->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'แก้ไขมิเตอร์เดิมสำเร็จและอัปเดตยอดเงินในบิลแล้ว'
+        ]);
+    }
+
 }
 

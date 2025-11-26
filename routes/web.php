@@ -170,6 +170,9 @@ Route::prefix('admin/waterworks')->group(function () {
         ->name('admin.water.verify_payment.getBill');
 });
 
+Route::post('/admin/water/update-old-miter', [WaterController::class, 'updateOldMiter'])
+    ->name('admin.water.updateOldMiter');
+
 Route::prefix('admin/approve_bill')->group(function () {
     // ✅ หน้าแสดงรายการใบเสร็จทั้งหมดที่รออนุมัติ
     Route::get('/', [TrashLocationController::class, 'showApproveList'])

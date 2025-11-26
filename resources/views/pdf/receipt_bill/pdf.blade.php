@@ -132,7 +132,7 @@
                     <span>ประเภท</span>
                     <span class="dotted-line" style="width:40%; text-align: left;">
                         {{ $fields['field_20'] ?? '-' }}</span>
-                    <span>ประจำเดือน</span>
+                    <span>ประจำ{{$fields['create_bill_for'] === 'รายเดือน' ? 'เดือน' :'ปี'}}</span>
                     <span class="dotted-line" style="width: 39%; text-align: left;">
                         {{ $fields['field_3'] ?? '-' }}</span>
                     <br>

@@ -33,45 +33,55 @@
                 <h4>จัดการ <img src="{{ url('../img/admin-water/Icon-5.png') }}" alt="Manage-icon"
                         class="img-fluid logo-img"></h4>
             </div>
+            @if (isset($tokenData['role']) && $tokenData['role'] != 'meter-filler')
 
-            <li>
-                <a href="/admin/waterworks/showdata"
-                    class="nav-link {{ Str::contains($path, 'showdata') ? 'active' : '' }}">
-                    <img src="{{ url('../img/admin-water/Icon-1.png') }}" alt="icon-1" class="img-fluid logo-img"
-                        style="width: 20px;">
-                    ข้อมูลขอเพิ่มทะเบียน
-                </a>
-            </li>
-
-            <li>
-                <a href="/admin/waterworks/manage-water"
-                    class="nav-link {{ Str::contains($path, 'manage-water') ? 'active' : '' }}">
-                    <img src="{{ url('../img/admin-water/Icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"
-                        style="width: 20px;">
-                    ทะเบียนผู้ใช้งาน
-                </a>
-            </li>
-
-            @if (isset($tokenData['role']) && $tokenData['role'] === 'admin-water-head')
                 <li>
-                    <a href="/admin/waterworks/approve-bill"
-                        class="nav-link {{ Str::contains($path, 'approve-bill') ? 'active' : '' }}">
-                        <img src="{{ url('../../img/admin-water/Icon-6.png') }}" alt="icon-3"
+                    <a href="/admin/waterworks/showdata"
+                        class="nav-link {{ Str::contains($path, 'showdata') ? 'active' : '' }}">
+                        <img src="{{ url('../img/admin-water/Icon-1.png') }}" alt="icon-1" class="img-fluid logo-img"
+                            style="width: 20px;">
+                        ข้อมูลขอเพิ่มทะเบียน
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/admin/waterworks/manage-water"
+                        class="nav-link {{ Str::contains($path, 'manage-water') ? 'active' : '' }}">
+                        <img src="{{ url('../img/admin-water/Icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"
+                            style="width: 20px;">
+                        ทะเบียนผู้ใช้งาน
+                    </a>
+                </li>
+
+                @if (isset($tokenData['role']) && $tokenData['role'] === 'admin-water-head')
+                    <li>
+                        <a href="/admin/waterworks/approve-bill"
+                            class="nav-link {{ Str::contains($path, 'approve-bill') ? 'active' : '' }}">
+                            <img src="{{ url('../../img/admin-water/Icon-6.png') }}" alt="icon-3"
+                                class="img-fluid logo-img" style="width: 20px;">
+                            อนุมัติใบเสร็จ
+                        </a>
+                    </li>
+                @endif
+
+                <li>
+                    <a href="/admin/waterworks/emergency"
+                        class="nav-link {{ Str::contains($path, 'emergency') ? 'active' : '' }}">
+                        <img src="{{ url('../../img/admin-water/Icon-3.png') }}" alt="icon-3"
                             class="img-fluid logo-img" style="width: 20px;">
-                        อนุมัติใบเสร็จ
+                        แจ้งเหตุ
+                    </a>
+                </li>
+            @else
+                <li>
+                    <a href="/admin/waterworks/manage-water"
+                        class="nav-link {{ Str::contains($path, 'manage-water') ? 'active' : '' }}">
+                        <img src="{{ url('../img/admin-water/Icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"
+                            style="width: 20px;">
+                        ทะเบียนผู้ใช้งาน
                     </a>
                 </li>
             @endif
-
-            <li>
-                <a href="/admin/waterworks/emergency"
-                    class="nav-link {{ Str::contains($path, 'emergency') ? 'active' : '' }}">
-                    <img src="{{ url('../../img/admin-water/Icon-3.png') }}" alt="icon-3" class="img-fluid logo-img"
-                        style="width: 20px;">
-                    แจ้งเหตุ
-                </a>
-            </li>
-
         </ul>
     </div>
 
