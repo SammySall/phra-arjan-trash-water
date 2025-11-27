@@ -83,37 +83,59 @@
                 <div class="d-flex justify-content-center">
                     <nav>
                         <ul class="pagination mb-0">
-                            {{-- ปุ่มก่อนหน้า --}}
-                            @if ($trashRequests->onFirstPage())
-                                <li class="paginate_button page-item previous disabled">
-                                    <a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a>
+
+                            {{-- ปุ่มไปหน้าแรก --}}
+                            @if (!$trashRequests->onFirstPage())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $trashRequests->url(1) }}">
+                                        <i class="bi bi-chevron-double-left"></i>
+                                    </a>
                                 </li>
                             @else
-                                <li class="paginate_button page-item previous">
-                                    <a class="page-link" href="{{ $trashRequests->previousPageUrl() }}"><i
-                                            class="bi bi-chevron-double-left"></i></a>
+                                <li class="page-item disabled">
+                                    <a class="page-link"><i class="bi bi-chevron-double-left"></i></a>
                                 </li>
                             @endif
 
-                            {{-- หน้าเลข --}}
-                            @foreach ($trashRequests->getUrlRange(1, $trashRequests->lastPage()) as $page => $url)
-                                <li
-                                    class="paginate_button page-item {{ $page == $trashRequests->currentPage() ? 'active' : '' }}">
-                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                            {{-- ปุ่มก่อนหน้า --}}
+                            <li class="page-item {{ $trashRequests->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashRequests->previousPageUrl() }}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            {{-- แสดงเฉพาะหน้า: current-2, current-1, current, current+1, current+2 --}}
+                            @php
+                                $start = max($trashRequests->currentPage() - 2, 1);
+                                $end = min($trashRequests->currentPage() + 2, $trashRequests->lastPage());
+                            @endphp
+
+                            @for ($page = $start; $page <= $end; $page++)
+                                <li class="page-item {{ $page == $trashRequests->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $trashRequests->url($page) }}">{{ $page }}</a>
                                 </li>
-                            @endforeach
+                            @endfor
 
                             {{-- ปุ่มถัดไป --}}
+                            <li class="page-item {{ !$trashRequests->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashRequests->nextPageUrl() }}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+
+                            {{-- ปุ่มไปหน้าสุดท้าย --}}
                             @if ($trashRequests->hasMorePages())
-                                <li class="paginate_button page-item next">
-                                    <a class="page-link" href="{{ $trashRequests->nextPageUrl() }}"><i
-                                            class="bi bi-chevron-double-right"></i></a>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $trashRequests->url($trashRequests->lastPage()) }}">
+                                        <i class="bi bi-chevron-double-right"></i>
+                                    </a>
                                 </li>
                             @else
-                                <li class="paginate_button page-item next disabled">
-                                    <a class="page-link" href="#"><i class="bi bi-chevron-double-right"></i></a>
+                                <li class="page-item disabled">
+                                    <a class="page-link"><i class="bi bi-chevron-double-right"></i></a>
                                 </li>
                             @endif
+
                         </ul>
                     </nav>
                 </div>

@@ -87,36 +87,59 @@
             <div class="d-flex justify-content-center">
                 <nav>
                     <ul class="pagination mb-0">
-                        {{-- ปุ่มก่อนหน้า --}}
-                        @if ($locations->onFirstPage())
-                            <li class="paginate_button page-item previous disabled">
-                                <a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a>
+
+                        {{-- ปุ่มไปหน้าแรก --}}
+                        @if (!$locations->onFirstPage())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $locations->url(1) }}">
+                                    <i class="bi bi-chevron-double-left"></i>
+                                </a>
                             </li>
                         @else
-                            <li class="paginate_button page-item previous">
-                                <a class="page-link" href="{{ $locations->previousPageUrl() }}"><i
-                                        class="bi bi-chevron-double-left"></i></a>
+                            <li class="page-item disabled">
+                                <a class="page-link"><i class="bi bi-chevron-double-left"></i></a>
                             </li>
                         @endif
 
-                        {{-- หน้าเลข --}}
-                        @foreach ($locations->getUrlRange(1, $locations->lastPage()) as $page => $url)
-                            <li class="paginate_button page-item {{ $page == $locations->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                        {{-- ปุ่มก่อนหน้า --}}
+                        <li class="page-item {{ $locations->onFirstPage() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $locations->previousPageUrl() }}">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+
+                        {{-- แสดงเฉพาะหน้า: current-2, current-1, current, current+1, current+2 --}}
+                        @php
+                            $start = max($locations->currentPage() - 2, 1);
+                            $end = min($locations->currentPage() + 2, $locations->lastPage());
+                        @endphp
+
+                        @for ($page = $start; $page <= $end; $page++)
+                            <li class="page-item {{ $page == $locations->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $locations->url($page) }}">{{ $page }}</a>
                             </li>
-                        @endforeach
+                        @endfor
 
                         {{-- ปุ่มถัดไป --}}
+                        <li class="page-item {{ !$locations->hasMorePages() ? 'disabled' : '' }}">
+                            <a class="page-link" href="{{ $locations->nextPageUrl() }}">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+
+                        {{-- ปุ่มไปหน้าสุดท้าย --}}
                         @if ($locations->hasMorePages())
-                            <li class="paginate_button page-item next">
-                                <a class="page-link" href="{{ $locations->nextPageUrl() }}"><i
-                                        class="bi bi-chevron-double-right"></i></a>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $locations->url($locations->lastPage()) }}">
+                                    <i class="bi bi-chevron-double-right"></i>
+                                </a>
                             </li>
                         @else
-                            <li class="paginate_button page-item next disabled">
-                                <a class="page-link" href="#"><i class="bi bi-chevron-double-right"></i></a>
+                            <li class="page-item disabled">
+                                <a class="page-link"><i class="bi bi-chevron-double-right"></i></a>
                             </li>
                         @endif
+
                     </ul>
                 </nav>
             </div>
@@ -190,51 +213,64 @@
         </div>
 
         {{-- Pagination --}}
-        <div class="mt-3">
-            {{-- แสดงจำนวนรายการ --}}
-            <div class="text-start mb-2">
-                แสดง {{ $locations->firstItem() ?? 0 }} ถึง {{ $locations->lastItem() ?? 0 }} จาก
-                {{ $locations->total() ?? 0 }} รายการ
-            </div>
+        <div class="d-flex justify-content-center">
+            <nav>
+                <ul class="pagination mb-0">
 
-            {{-- ปุ่ม pagination --}}
-            <div class="d-flex justify-content-center">
-                <nav>
-                    <ul class="pagination mb-0">
-                        {{-- ปุ่มก่อนหน้า --}}
-                        @if ($locations->onFirstPage())
-                            <li class="paginate_button page-item previous disabled">
-                                <a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a>
-                            </li>
-                        @else
-                            <li class="paginate_button page-item previous">
-                                <a class="page-link" href="{{ $locations->previousPageUrl() }}"><i
-                                        class="bi bi-chevron-double-left"></i></a>
-                            </li>
-                        @endif
+                    {{-- ปุ่มไปหน้าแรก --}}
+                    @if (!$locations->onFirstPage())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $locations->url(1) }}">
+                                <i class="bi bi-chevron-double-left"></i>
+                            </a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <a class="page-link"><i class="bi bi-chevron-double-left"></i></a>
+                        </li>
+                    @endif
 
-                        {{-- หน้าเลข --}}
-                        @foreach ($locations->getUrlRange(1, $locations->lastPage()) as $page => $url)
-                            <li
-                                class="paginate_button page-item {{ $page == $locations->currentPage() ? 'active' : '' }}">
-                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                            </li>
-                        @endforeach
+                    {{-- ปุ่มก่อนหน้า --}}
+                    <li class="page-item {{ $locations->onFirstPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $locations->previousPageUrl() }}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
 
-                        {{-- ปุ่มถัดไป --}}
-                        @if ($locations->hasMorePages())
-                            <li class="paginate_button page-item next">
-                                <a class="page-link" href="{{ $locations->nextPageUrl() }}"><i
-                                        class="bi bi-chevron-double-right"></i></a>
-                            </li>
-                        @else
-                            <li class="paginate_button page-item next disabled">
-                                <a class="page-link" href="#"><i class="bi bi-chevron-double-right"></i></a>
-                            </li>
-                        @endif
-                    </ul>
-                </nav>
-            </div>
+                    {{-- แสดงเฉพาะหน้า: current-2, current-1, current, current+1, current+2 --}}
+                    @php
+                        $start = max($locations->currentPage() - 2, 1);
+                        $end = min($locations->currentPage() + 2, $locations->lastPage());
+                    @endphp
+
+                    @for ($page = $start; $page <= $end; $page++)
+                        <li class="page-item {{ $page == $locations->currentPage() ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $locations->url($page) }}">{{ $page }}</a>
+                        </li>
+                    @endfor
+
+                    {{-- ปุ่มถัดไป --}}
+                    <li class="page-item {{ !$locations->hasMorePages() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $locations->nextPageUrl() }}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+
+                    {{-- ปุ่มไปหน้าสุดท้าย --}}
+                    @if ($locations->hasMorePages())
+                        <li class="page-item">
+                            <a class="page-link" href="{{ $locations->url($locations->lastPage()) }}">
+                                <i class="bi bi-chevron-double-right"></i>
+                            </a>
+                        </li>
+                    @else
+                        <li class="page-item disabled">
+                            <a class="page-link"><i class="bi bi-chevron-double-right"></i></a>
+                        </li>
+                    @endif
+
+                </ul>
+            </nav>
         </div>
 
     </div>
