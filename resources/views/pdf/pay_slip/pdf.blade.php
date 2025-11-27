@@ -204,11 +204,11 @@
                                 <!-- คอลัมน์ขวา -->
                                 <td style="border:1px solid #000; padding:5px; text-align:left;">
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
-                                        {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}</span><br>
+                                        {{ $fields['field_4'] - 10 ?? '' }}.{{ $fields['field_15'] ?? '' }}</span><br>
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
-                                        {{ $fields['field_99'] ?? '-' }}</span><br>
+                                        {{ $fields['field_4'] ? '10' : '-' }}</span><br>
                                     <span class="dotted-line" style="width: 100%; text-align: left;">
-                                        {{ isset($fields['field_99'], $fields['field_100']) ? $fields['field_100'] - $fields['field_99'] : '-' }}
+                                        {{ $fields['field_4'] ?? '' }}.{{ $fields['field_15'] ?? '' }}
                                     </span><br>
                                 </td>
                             </tr>
@@ -329,15 +329,15 @@
                 <div class="signature-item" style="text-align: left;">
                     <span>(ลงนาม)</span>
                     <span class="dotted-line" style="width: 75%; display: inline-block; text-align: center;">
-                        @if (isset($fields['field_99']) && ($fields['status'] === 'รออนุมัติ' || $fields['status'] === 'ชำระแล้ว'))
-                            <img src="{{ public_path('img/signature/1.jpg') }}" alt="signature2"
-                                style="width:50%; ">
+                                    @if ($fields['field_12'] !== null && ($fields['status'] === 'รออนุมัติ' || $fields['status'] === 'ชำระแล้ว'))
+                            <img src="{{ public_path('img/signature/' . $fields['field_12'] . '.jpg') }}"
+                                alt="signature1" style="width:50%; margin-top:1.5rem;">
                         @endif
                     </span>
                     <div>
                         <span style="margin-left:2.3rem;">(</span>
                         <span class="dotted-line" style="width: 73%; display: inline-block; text-align: center;">
-                            {{ isset($fields['field_99'], $fields['status']) && $fields['status'] === 'ชำระแล้ว' ? 'นางสาวสมยา จันทร์ฟัก' : '' }}
+                            {{ $fields['field_12'] && ($fields['status'] === 'รออนุมัติ' || $fields['status'] === 'ชำระแล้ว') ? $fields['field_12'] : '' }}
                         </span>
                         <span>)</span>
                     </div>

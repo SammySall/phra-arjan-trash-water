@@ -18,11 +18,16 @@ class WaterHistory extends Model
         'updateAt',
         'updateBy',
         'unit_price',
+        'bill_id',
     ];
 
     // ความสัมพันธ์กับ water_location
     public function waterLocation()
     {
         return $this->belongsTo(WaterLocation::class);
+    }
+    public function bills()
+    {
+        return $this->hasMany(Bill::class);
     }
 }

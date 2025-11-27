@@ -7,6 +7,7 @@ use App\Models\TrashRequestHistory;
 use App\Models\TrashRequestFile;
 use App\Models\TrashLocation;
 use App\Models\WaterLocation;
+use App\Models\WaterHistory;
 use App\Models\Bill;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -975,7 +976,7 @@ public function confirmPaymentRequestEng($type)
     public function showPdfWaterBill($billId)
     {
         $bill = Bill::with('waterLocation.trashRequest', 'user')->findOrFail($billId);
-
+        $histories = WaterHistory::where('bill_id', $billId)->first();
         $waterLocation = $bill->waterLocation;
         $user = $bill->user; // ดึงผู้ใช้เจ้าของบิล
         // วัน เดือน ปี ภาษาไทย
@@ -997,8 +998,8 @@ public function confirmPaymentRequestEng($type)
             'field_3'  => $month ?? '',
             'field_4'  => $baht ?? '',
             'field_15' => $satang ?? null,
-            'field_5'  => $waterLocation->old_miter ?? 0,
-            'field_6'  => $waterLocation->new_miter ?? null,
+            'field_5'  => $histories->old_miter ?? 0,
+            'field_6'  => $histories->update_miter ?? null,
             'field_7'  => $waterLocation?->address ?? '',
             'field_8'  => $waterLocation?->water_user_no ?? '',
             'field_9'  => $waterLocation?->province ?? '',

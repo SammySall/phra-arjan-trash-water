@@ -9,6 +9,7 @@ use App\Http\Controllers\GarbageController;
 use App\Http\Controllers\WaterController;
 use App\Http\Controllers\TrashBankController;
 use App\Http\Controllers\EmergencyController;
+use App\Http\Controllers\UserImportController;
 use Barryvdh\DomPDF\Facade\Pdf;
 
 
@@ -191,3 +192,5 @@ Route::get('/link-storage', function () {
     Artisan::call('storage:link');
     return 'Storage link created!';
 });
+
+Route::get('/admin/import-users', [UserImportController::class, 'importExcel']);

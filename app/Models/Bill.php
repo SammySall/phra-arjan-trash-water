@@ -39,4 +39,8 @@ class Bill extends Model
     {
         return $this->belongsTo(WaterLocation::class, 'water_location_id');
     }
+    public function histories()
+    {
+        return $this->belongsTo(WaterHistory::class, 'water_location_id');
+    }
 }

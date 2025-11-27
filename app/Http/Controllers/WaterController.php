@@ -299,7 +299,7 @@ class WaterController extends Controller
         $usage = $newMiter - $oldMiter;
         if ($usage < 0) $usage = 0;
 
-        $amount = $usage * $unitPrice;
+        $amount = $usage * $unitPrice + 10;
 
         // สร้างบิลใหม่
         $bill = Bill::create([
@@ -325,6 +325,7 @@ class WaterController extends Controller
             'update_miter' => $newMiter,
             'updateAt' => Carbon::now(),
             'updateBy' => $user->id,
+            'bill_id' => $bill->id,
         ]);
 
         return redirect()->back()->with('success', 'บิลน้ำถูกสร้างเรียบร้อยแล้ว');
