@@ -12,6 +12,7 @@ class UserImportController extends Controller
 {
     public function importExcel()
     {
+        ini_set('max_execution_time', 300); // 300 วินาที (5 นาที)
         // 1) ระบุ path ของไฟล์ใน storage
         $filePath = storage_path('app/import/ข้อมูลที่ต้องการเพิ่มเติม อบต.พระอาจารย์.xlsx');
 
