@@ -29,9 +29,9 @@ class UserImportController extends Controller
             if ($index == 1) continue; // ข้าม header
 
             // ปรับคอลัมน์ตาม Excel จริง เช่น A=คำนำหน้า, B=ชื่อ, C=ที่อยู่
-            $prefix   = trim($row['A']);
-            $fullname = trim($row['B']);
-            $address  = trim($row['C']);
+            $prefix   = trim($row['B']);
+            $fullname = trim($row['C']);
+            $address  = trim($row['E']);
 
             if (!$fullname) continue; // ถ้าว่าง ข้าม
 
