@@ -14,7 +14,7 @@ class TrashRequest extends Model
         'house_no', 'village_no', 'alley', 'road', 'subdistrict', 'district', 'province',
         'place_type', 'lat', 'lng', 'type', 'addon','note',
         'status', 'receiver_id', 'creator_id', 'received_at',
-        'convenient_date', 'appointment_date'
+        'convenient_date', 'appointment_date','water_location_id'
     ];
 
     // ความสัมพันธ์กับผู้รับผิดชอบ

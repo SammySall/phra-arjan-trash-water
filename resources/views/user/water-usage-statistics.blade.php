@@ -29,8 +29,9 @@
                                 <span class="fw-bold text-dark">
                                     {{ $location->name ?? 'ไม่ระบุ' }} ({{ $location->water_user_no ?? '-' }})
                                 </span>
-                                <img src="../../img/water-statistics/icon-4.png" alt="banner"
-                                    class="trash-toxic-img img-fluid rounded shadow-sm me-3">
+                                <img src="../../img/water-statistics/Icon-4.png" alt="banner"
+                                    class="trash-toxic-img-delete img-fluid rounded shadow-sm delete-location me-3"
+                                    data-id="{{ $location->id }}">
                             </div>
 
                         </div>
@@ -169,6 +170,44 @@
                                 } catch (err) {
                                     Swal.fire('ผิดพลาด', 'เกิดข้อผิดพลาดในการเชื่อมต่อ',
                                         'error');
+                                }
+                            });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.delete-location').forEach(img => {
+            img.addEventListener('click', function() {
+                const locationId = this.dataset.id;
+
+                Swal.fire({
+                    title: 'ยืนยันการลบ',
+                    text: 'ต้องการลบทะเบียนใช้น้ำนี้หรือไม่?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'ลบ',
+                    cancelButtonText: 'ยกเลิก'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/user/waterworks/request-delete', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({
+                                    water_location_id: locationId
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    Swal.fire('ส่งคำขอแล้ว', data.message, 'success');
+                                } else {
+                                    Swal.fire('ผิดพลาด', data.message, 'error');
                                 }
                             });
                     }

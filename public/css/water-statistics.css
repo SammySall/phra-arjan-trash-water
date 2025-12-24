@@ -72,3 +72,12 @@
     /* ฟ้าอ่อนแบบน้ำ */
     box-shadow: 0 4px 10px rgba(0, 123, 255, 0.15);
 }
+
+.trash-toxic-img-delete {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.trash-toxic-img-delete:hover {
+    transform: scale(1.2);
+}

@@ -188,6 +188,20 @@ Route::prefix('admin/approve_bill')->group(function () {
         ->name('admin.verify_payment.getBill');
 });
 
+Route::delete('/user/water-location/{id}', [WaterController::class, 'softDeleteLocation'])
+    ->name('user.water_location.delete');
+Route::get('/admin/waterworks/delete',
+    [WaterController::class, 'showWaterDeleteRequests']
+)->name('admin.water.delete.list');
+Route::post('/admin/waterworks/delete/approve',
+    [WaterController::class, 'approveDeleteWaterLocation']
+)->name('admin.water.delete.approve');
+
+Route::post('/user/waterworks/request-delete',
+    [WaterController::class, 'requestDeleteWaterLocation']
+)->name('user.water_location.request_delete');
+
+
 Route::get('/link-storage', function () {
     Artisan::call('storage:link');
     return 'Storage link created!';

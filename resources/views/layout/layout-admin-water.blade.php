@@ -45,6 +45,15 @@
                 </li>
 
                 <li>
+                    <a href="/admin/waterworks/delete"
+                        class="nav-link {{ Str::contains($path, 'delete') ? 'active' : '' }}">
+                        <img src="{{ url('../img/admin-water/Icon-1.png') }}" alt="icon-1" class="img-fluid logo-img"
+                            style="width: 20px;">
+                        ข้อมูลขอลบทะเบียน
+                    </a>
+                </li>
+
+                <li>
                     <a href="/admin/waterworks/manage-water"
                         class="nav-link {{ Str::contains($path, 'manage-water') ? 'active' : '' }}">
                         <img src="{{ url('../img/admin-water/Icon-2.png') }}" alt="icon-2" class="img-fluid logo-img"

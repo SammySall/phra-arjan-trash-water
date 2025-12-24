@@ -104,7 +104,9 @@ class WaterController extends Controller
         $user = auth()->user();
 
         // ✅ ดึงข้อมูล WaterLocation ทั้งหมดของ user ที่ล็อกอินอยู่
-        $waterLocations = WaterLocation::where('owner_id', $user->id)->get();
+        $waterLocations = WaterLocation::where('owner_id', $user->id)
+            ->where('active', 1)
+            ->get();
 
         // ✅ ดึง bills เฉพาะของ user ที่มี type = water-request
         // และ water_location_id ต้องอยู่ในรายการของ waterLocations
@@ -492,6 +494,144 @@ class WaterController extends Controller
             'message' => 'แก้ไขมิเตอร์เดิมสำเร็จและอัปเดตยอดเงินในบิลแล้ว'
         ]);
     }
+
+    public function softDeleteLocation($id)
+    {
+        $user = auth()->user();
+
+        $location = WaterLocation::where('id', $id)
+            ->where('owner_id', $user->id)
+            ->firstOrFail();
+
+        $location->active = 0;
+        $location->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'ลบทะเบียนใช้น้ำเรียบร้อยแล้ว'
+        ]);
+    }
+
+    public function requestDeleteWaterLocation(Request $request)
+    {
+        $request->validate([
+            'water_location_id' => 'required|exists:water_locations,id'
+        ]);
+
+        $location = WaterLocation::where('id', $request->water_location_id)
+            ->where('owner_id', auth()->id())
+            ->firstOrFail();
+
+        TrashRequest::create([
+            'type' => 'water-delete',
+            'status' => 'รอรับเรื่อง',
+            'creator_id' => auth()->id(),
+            'water_location_id' => $request->water_location_id,
+            'fullname' => auth()->user()->name,
+            'addon' => json_encode([
+                'water_no' => $location->water_user_no,
+                'address' => $location->address,
+            ], JSON_UNESCAPED_UNICODE)
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'ส่งคำขอลบทะเบียนเรียบร้อยแล้ว'
+        ]);
+    }
+
+    public function showWaterDeleteRequests(Request $request)
+    {
+        $search  = $request->input('search');
+        $perPage = $request->input('data_table_length', 10);
+
+        $trashRequests = TrashRequest::with([
+                'receiver:id,name',
+                'files',
+                'water_location'
+            ])
+            ->where('type', 'water-delete')
+            ->where('status', 'รอรับเรื่อง')
+            ->when($search, function ($query, $search) {
+                $query->where('fullname', 'LIKE', "%{$search}%")
+                    ->orWhereHas('waterLocation', function ($q) use ($search) {
+                        $q->where('water_user_no', 'LIKE', "%{$search}%")
+                        ->orWhere('address', 'LIKE', "%{$search}%");
+                    });
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends([
+                'search' => $search,
+                'data_table_length' => $perPage
+            ]);
+
+        // ดึง history เหมือน showData
+        $histories = TrashRequestHistory::with('responder:id,name')->get();
+
+        $modified = $trashRequests->getCollection()->map(function ($request) use ($histories) {
+
+            $requestHistories = $histories
+                ->where('trash_request_id', $request->id)
+                ->map(function ($item) {
+                    return [
+                        'responder_name' => $item->responder->name ?? '-',
+                        'created_at' => $item->created_at->format('Y-m-d H:i:s'),
+                        'message' => $item->message,
+                    ];
+                })->values();
+
+            $request->receiver_name = $request->receiver->name ?? '-';
+            $request->histories = $requestHistories;
+            $request->picture_path = $request->files->pluck('file_path')->toArray();
+
+            // water data จาก relationship
+            $addon = json_decode($request->addon, true) ?? [];
+
+            $request->water_data = [
+                'water_no' => $request->waterLocation->water_user_no
+                    ?? $addon['water_no']
+                    ?? '-',
+
+                'address' => $request->waterLocation->address
+                    ?? $addon['address']
+                    ?? '-',
+            ];
+
+            return $request;
+        });
+
+        $trashRequests->setCollection($modified);
+
+        return view(
+            'admin_water.showdata-delete',
+            compact('trashRequests', 'search', 'perPage')
+        );
+    }
+
+
+    public function approveDeleteWaterLocation(Request $request)
+    {
+        $request->validate([
+            'request_id' => 'required|exists:trash_requests,id'
+        ]);
+
+        $trash = TrashRequest::findOrFail($request->request_id);
+        $water = WaterLocation::findOrFail($trash->water_location_id);
+        if ($water) {
+            $water->active = 0;
+            $water->save();
+        }
+
+        $trash->status = 'อนุมัติแล้ว';
+        $trash->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'ลบทะเบียนใช้น้ำเรียบร้อยแล้ว'
+        ]);
+    }
+
 
 }
 

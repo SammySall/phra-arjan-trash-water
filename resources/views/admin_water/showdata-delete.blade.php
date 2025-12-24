@@ -1,0 +1,341 @@
+@extends('layout.layout-admin-water')
+@section('title', 'ข้อมูลค่าน้ำ')
+
+@section('desktop-content')
+    <h3 class="text-center px-2">แบบคำร้องขอลบทะเบียนผู้ใช้น้ำ</h3>
+    <h4 class="text-center px-2">ตารางแสดงข้อมูลฟอร์มที่ส่งเข้ามา</h4>
+    <div class="container bg-white bg-opacity-75 p-5 rounded-3 shadow-sm">
+
+        {{-- ฟิลเตอร์ --}}
+        <div id="data_table_wrapper" class="mt-3">
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <form method="GET" class="d-flex align-items-center">
+                        <span class="me-1">แสดง</span>
+                        <select name="data_table_length" class="form-select form-select-sm me-2" style="width:auto;"
+                            onchange="this.form.submit()">
+                            <option value="10" {{ $perPage == 10 ? 'selected' : '' }}>10</option>
+                            <option value="25" {{ $perPage == 25 ? 'selected' : '' }}>25</option>
+                            <option value="50" {{ $perPage == 50 ? 'selected' : '' }}>50</option>
+                            <option value="-1" {{ $perPage == -1 ? 'selected' : '' }}>ทั้งหมด</option>
+                        </select>
+                        <input type="hidden" name="search" value="{{ $search }}">
+                        <span class="me-1">รายการ </span>
+                    </form>
+                </div>
+
+                <div class="col-md-6 d-flex justify-content-end">
+                    <form method="GET" class="d-flex">
+                        <span class="me-1">ค้นหา : </span>
+                        <input type="search" name="search" class="form-control form-control-sm me-2"
+                            placeholder="ค้นหาชื่อผู้ส่งหรือผู้รับ..." value="{{ $search }}" style="width:auto;">
+                        <input type="hidden" name="data_table_length" value="{{ $perPage }}">
+                    </form>
+                </div>
+            </div>
+
+            {{-- ตารางข้อมูล --}}
+            <table class="table table-bordered table-striped text-center align-middle" id="data_table">
+                <thead>
+                    <tr>
+                        <th>วันที่ส่ง</th>
+                        <th>ชื่อผู้ส่งฟอร์ม</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($trashRequests as $item)
+                        <tr>
+                            <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $item->fullname }}</td>
+                            <td>
+                                <img src="{{ url('../img/icon/' . $item->status . '.png') }}" class="img-fluid logo-img"
+                                    alt="{{ $item->status }}">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm view-file"
+                                    data-row='@json($item)'>
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5">ไม่มีข้อมูลฟอร์ม</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+
+            {{-- Pagination --}}
+            <div class="mt-3">
+                {{-- แสดงจำนวนรายการ --}}
+                <div class="text-start mb-2">
+                    แสดง {{ $trashRequests->firstItem() ?? 0 }} ถึง {{ $trashRequests->lastItem() ?? 0 }} จาก
+                    {{ $trashRequests->total() ?? 0 }} รายการ
+                </div>
+
+                {{-- ปุ่ม pagination --}}
+                <div class="d-flex justify-content-center">
+                    <nav>
+                        <ul class="pagination mb-0">
+
+                            {{-- ปุ่มไปหน้าแรก --}}
+                            @if (!$trashRequests->onFirstPage())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $trashRequests->url(1) }}">
+                                        <i class="bi bi-chevron-double-left"></i>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <a class="page-link"><i class="bi bi-chevron-double-left"></i></a>
+                                </li>
+                            @endif
+
+                            {{-- ปุ่มก่อนหน้า --}}
+                            <li class="page-item {{ $trashRequests->onFirstPage() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashRequests->previousPageUrl() }}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            {{-- แสดงเฉพาะหน้า: current-2, current-1, current, current+1, current+2 --}}
+                            @php
+                                $start = max($trashRequests->currentPage() - 2, 1);
+                                $end = min($trashRequests->currentPage() + 2, $trashRequests->lastPage());
+                            @endphp
+
+                            @for ($page = $start; $page <= $end; $page++)
+                                <li class="page-item {{ $page == $trashRequests->currentPage() ? 'active' : '' }}">
+                                    <a class="page-link" href="{{ $trashRequests->url($page) }}">{{ $page }}</a>
+                                </li>
+                            @endfor
+
+                            {{-- ปุ่มถัดไป --}}
+                            <li class="page-item {{ !$trashRequests->hasMorePages() ? 'disabled' : '' }}">
+                                <a class="page-link" href="{{ $trashRequests->nextPageUrl() }}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+
+                            {{-- ปุ่มไปหน้าสุดท้าย --}}
+                            @if ($trashRequests->hasMorePages())
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $trashRequests->url($trashRequests->lastPage()) }}">
+                                        <i class="bi bi-chevron-double-right"></i>
+                                    </a>
+                                </li>
+                            @else
+                                <li class="page-item disabled">
+                                    <a class="page-link"><i class="bi bi-chevron-double-right"></i></a>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- SweetAlert2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @php
+        $userId = null;
+        if (session('token')) {
+            $payload = json_decode(\Illuminate\Support\Facades\Crypt::decryptString(session('token')), true);
+            $userId = $payload['userId'] ?? null;
+        }
+    @endphp
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const buttons = document.querySelectorAll(".view-file");
+            const userId = @json($userId);
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", function() {
+
+                    const rowData = JSON.parse(this.dataset.row);
+                    const isPending = rowData.status === 'รอรับเรื่อง';
+
+                    const htmlContent = `
+                <div style="text-align:left; font-size:16px; line-height:1.6;">
+                    <strong>ข้อมูลผู้ใช้น้ำ</strong><br><br>
+
+                    หมายเลขผู้ใช้น้ำ:
+                    <strong>${rowData.water_data?.water_no || '-'}</strong><br>
+
+                    ชื่อผู้ใช้น้ำ:
+                    <strong>${rowData.fullname || '-'}</strong><br>
+
+                    ที่อยู่:
+                    <strong>${rowData.water_data?.address || '-'}</strong><br>
+
+                    <div class="text-end mt-3">
+                        <button id="acceptForm"
+                            class="btn btn-success btn-sm"
+                            ${!isPending ? 'disabled' : ''}>
+                            อนุมัติการลบ
+                        </button>
+                    </div>
+                </div>
+            `;
+
+                    Swal.fire({
+                        title: 'แสดงข้อมูล',
+                        html: htmlContent,
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        width: 500,
+                        didOpen: () => {
+
+                            const acceptBtn = document.getElementById('acceptForm');
+                            if (!acceptBtn || !isPending) return;
+
+                            acceptBtn.addEventListener('click', () => {
+                                fetch("{{ route('admin.water.delete.approve') }}", {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: JSON.stringify({
+                                            request_id: rowData.id
+                                        })
+                                    })
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            Swal.fire('สำเร็จ', data
+                                                    .message, 'success')
+                                                .then(() => location
+                                                .reload());
+                                        } else {
+                                            Swal.fire('ผิดพลาด',
+                                                'ไม่สามารถอัปเดตข้อมูลได้',
+                                                'error');
+                                        }
+                                    })
+                                    .catch(() => {
+                                        Swal.fire('ผิดพลาด',
+                                            'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้',
+                                            'error');
+                                    });
+                            });
+                        }
+                    });
+                });
+            });
+
+        });
+    </script>
+
+    <script>
+        const allHistories = @json($trashRequests);
+        console.log(allHistories); // จะเห็นข้อมูลใน console
+    </script>
+
+@endsection
+
+@section('mobile-content')
+    <h3 class="text-center px-2">แบบคำขอรับการประเมินค่าธรรมเนียม และขอรับถังขยะมูลฝอยทั่วไป</h3>
+    <h4 class="text-center px-2">ตารางแสดงข้อมูลฟอร์มที่ส่งเข้ามา</h4>
+
+    <div class="container bg-white bg-opacity-75 p-5 rounded-3 shadow-sm">
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped text-center align-middle">
+                <thead>
+                    <tr>
+                        <th>วันที่ส่ง</th>
+                        <th>ชื่อผู้ส่งฟอร์ม</th>
+                        <th>ผู้กดรับฟอร์ม</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($trashRequests as $item)
+                        <tr>
+                            <td>{{ $item->created_at->format('d/m/Y') }}</td>
+                            <td>{{ $item->fullname }}</td>
+                            <td>{{ $item->receiver_name }}</td>
+                            <td>
+                                <img src="{{ url('../img/icon/' . $item->status . '.png') }}" class="img-fluid logo-img"
+                                    alt="{{ $item->status }}">
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm view-file"
+                                    data-row='@json($item)'>
+                                    <i class="bi bi-filetype-pdf"></i>
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm reply-btn"
+                                    data-id="{{ $item->id }}">
+                                    <i class="bi bi-reply"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5">ไม่มีข้อมูลฟอร์ม</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- Pagination --}}
+        <div class="mt-3">
+            {{-- แสดงจำนวนรายการ --}}
+            <div class="text-start mb-2">
+                แสดง {{ $trashRequests->firstItem() ?? 0 }} ถึง {{ $trashRequests->lastItem() ?? 0 }} จาก
+                {{ $trashRequests->total() ?? 0 }} รายการ
+            </div>
+
+            {{-- ปุ่ม pagination --}}
+            <div class="d-flex justify-content-center">
+                <nav>
+                    <ul class="pagination mb-0">
+                        {{-- ปุ่มก่อนหน้า --}}
+                        @if ($trashRequests->onFirstPage())
+                            <li class="paginate_button page-item previous disabled">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-double-left"></i></a>
+                            </li>
+                        @else
+                            <li class="paginate_button page-item previous">
+                                <a class="page-link" href="{{ $trashRequests->previousPageUrl() }}"><i
+                                        class="bi bi-chevron-double-left"></i></a>
+                            </li>
+                        @endif
+
+                        {{-- หน้าเลข --}}
+                        @foreach ($trashRequests->getUrlRange(1, $trashRequests->lastPage()) as $page => $url)
+                            <li
+                                class="paginate_button page-item {{ $page == $trashRequests->currentPage() ? 'active' : '' }}">
+                                <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                            </li>
+                        @endforeach
+
+                        {{-- ปุ่มถัดไป --}}
+                        @if ($trashRequests->hasMorePages())
+                            <li class="paginate_button page-item next">
+                                <a class="page-link" href="{{ $trashRequests->nextPageUrl() }}"><i
+                                        class="bi bi-chevron-double-right"></i></a>
+                            </li>
+                        @else
+                            <li class="paginate_button page-item next disabled">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-double-right"></i></a>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+@endsection
